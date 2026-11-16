@@ -3,18 +3,20 @@
 A static, mobile-first site for Philippine PCSO lotto results, number statistics and the 20% TRAIN
 Law prize tax — written in **Tagalog by default, English on demand** (`?lang=en` or the
 `[Tagalog | English]` switch in the header) and built on **real PCSO draw records** for the five
-6-number jackpot games:
+6-number jackpot games and the two daily digit games:
 
-| Game | Numbers | Draw nights | ODDS (6 of 6) | Draws stored |
+| Game | Numbers | Draw schedule | Odds (top prize) | Draws stored |
 |---|---|---|---|---|
 | Ultra Lotto 6/58 | 1–58 | Tue · Fri · Sun, 9:00 PM PHT | 1 in 40,475,358 | 446 |
 | Grand Lotto 6/55 | 1–55 | Mon · Wed · Sat, 9:00 PM PHT | 1 in 28,989,675 | 447 |
 | Super Lotto 6/49 | 1–49 | Tue · Thu · Sun, 9:00 PM PHT | 1 in 13,983,816 | 446 |
 | Mega Lotto 6/45 | 1–45 | Mon · Wed · Fri, 9:00 PM PHT | 1 in 8,145,060 | 447 |
 | Lotto 6/42 | 1–42 | Tue · Thu · Sat, 9:00 PM PHT | 1 in 5,245,786 | 444 |
+| 3D Lotto (Swertres) | three digits, 0–9 | **every day, 2:00 PM · 5:00 PM · 9:00 PM PHT** | 1 in 1,000 (₱4,500 per ₱10) | 3,120 |
+| 2D Lotto (EZ2) | two numbers, 01–31 | **every day, 2:00 PM · 5:00 PM · 9:00 PM PHT** | 1 in 961 (₱4,000 per ₱10) | 3,120 |
 
-Coverage: **January 2, 2024 → November 16, 2026**, 2,230 draws. Refreshed automatically every night
-by GitHub Actions (see §4).
+Coverage: **January 2, 2024 → November 16, 2026** — 2,230 six-number draws plus 1,040 days × 3 draws
+for each digit game (8,470 draws in total). Refreshed automatically by GitHub Actions (see §4).
 
 **Live:** https://lotto-tools.github.io/pcso-lotto-hub/ (GitHub Pages, `main` / root).
 
@@ -37,8 +39,9 @@ pcso-lotto-site/
 ├── assets/
 │   ├── css/style.css       All styling, one file, responsive from 320 px up
 │   ├── js/i18n.js          Language layer: Tagalog source text, English strings, [Tagalog | English] switch
-│   ├── js/lotto-core.js    Pure logic: tax, claim brackets, statistics, generator, checks (no DOM)
-│   ├── js/app.js           UI wiring and rendering
+│   ├── js/lotto-core.js    Pure logic: tax, claim brackets, statistics, generators, checks (no DOM)
+│   ├── js/daily.js         UI for the daily digit games (3D Lotto · 2D Lotto)
+│   ├── js/app.js           UI wiring and rendering of the five 6-number games
 │   └── img/
 │       ├── favicon.svg
 │       └── og-cover.png    1200×630 social card
@@ -89,6 +92,25 @@ pcso-lotto-site/
 - Odd/even distribution, low/high split (low = 1 … ⌊max/2⌋), sum distribution in equal bands.
 - Most common pairs, plus draws analyzed, expected hits per number and average sum.
 
+**3D Lotto (Swertres) and 2D Lotto (EZ2)** — the two daily digit games
+- Their own pills at the right of the game bar (`3D` / `2D`, with `2PM · 5PM · 9PM`), opening a
+  dedicated results / statistics / picker set; the five 6-number games and their panels are untouched.
+- Latest draw with the digits in the order drawn, the slot (2:00 PM, 5:00 PM or 9:00 PM), the winners
+  and the fixed Standard prize — ₱4,500 per ₱10 on 3D, ₱4,000 on 2D — with the net after tax.
+- **Today's three draws** as three cards, newest first, each with its own YouTube link.
+- Prize table per game: Standard (exact order), and Rambolito — 3D pays ₱750 (three different digits)
+  or ₱1,500 (one pair), 2D pays ₱2,000 (any order); a draw where every digit is the same has no
+  Rambolito play.
+- Date lookup: all three draws of any date since January 2, 2024, each linking a YouTube search
+  `PCSO 3D Lotto Swertres {date} {2PM|5PM|9PM}` / `PCSO 2D Lotto EZ2 {date} {slot}`.
+- History table (last 20 / 50 / 100 / all) with date, slot, weekday, digits, prize, winners and a
+  per-draw video link.
+- Statistics: frequency heatmap over 0–9 or 01–31, hot / cold / overdue numbers, a position-by-position
+  table (three positions on 3D, two on 2D) and the shape of the winning combination (all different,
+  one pair, all the same).
+- A simple picker: tap numbers to keep or drop, choose the shape, generate five combinations, and see
+  for each one how often it would have hit straight (Standard) or on any order (Rambolito).
+
 **Smart generator**
 - Include up to 5 fixed numbers, exclude any number, odd/even split (any, 1:5 … 5:1), optional
   "no consecutive numbers" filter — all inside the selected game's range.
@@ -108,11 +130,29 @@ pcso-lotto-site/
 - **Source of record:** Philippine Charity Sweepstakes Office — *Search Lotto Result by Date*,
   <https://www.pcso.gov.ph/SearchLottoResult.aspx>.
 - **Transport:** the open [Lotto Tayo dataset](https://github.com/kimken147/pcso-results-data)
-  (`data/results/6-58.json`, `6-55.json`, `6-49.json`, `6-45.json`, `6-42.json`), which republishes the
-  PCSO result rows after every draw. Licence CC BY 4.0 — attribution "Lotto Tayo (lottotayo.ph)" is in
-  the source note on `index.html` and on the guide page.
-- **Nothing is generated.** Every row is a PCSO draw with its date, six winning numbers, jackpot and
-  jackpot-winner count. No fill-ins, no estimates.
+  (`data/results/6-58.json`, `6-55.json`, `6-49.json`, `6-45.json`, `6-42.json` for the six-number
+  games, `swertres.json` and `ez2.json` for the digit games), which republishes the PCSO result rows
+  after every draw. Licence CC BY 4.0 — attribution "Lotto Tayo (lottotayo.ph)" is in the source note
+  on `index.html` and on the guide page.
+- **Nothing is generated.** Every row is a PCSO draw with its date, draw time, winning numbers, prize
+  and winner count. No fill-ins, no estimates.
+
+Data shape (`data/pcso_draws.json`):
+
+```jsonc
+{
+  "meta": { "source": "…", "collectedAt": "2026-11-16", "games": { "658": {…}, "3d": {…}, "2d": {…} } },
+  "draws": {
+    "658": [ { "d": "2026-11-15", "n": [14,15,18,26,33,46], "j": 537913610.81, "w": 0 } ],
+    "3d":  [ { "d": "2026-11-16", "t": "21:00", "n": ["7","9","8"], "j": 4500.0, "w": 216 } ],
+    "2d":  [ { "d": "2026-11-16", "t": "21:00", "n": ["23","06"],  "j": 4000.0, "w": 236 } ]
+  }
+}
+```
+
+Six-number rows carry date, six ascending numbers, jackpot and jackpot winners. Digit rows carry date,
+draw time (`14:00` / `17:00` / `21:00`), the digits **in the order drawn** (`0`–`9` on 3D, `01`–`31`
+zero-padded on 2D), the fixed Standard prize and the number of winners.
 
 Spot checks made when the database was built (numbers and jackpots matched exactly):
 
@@ -136,16 +176,17 @@ draw has six unique numbers inside the pool, and that there is one draw per date
 
 | | |
 |---|---|
-| Schedule | `30 13 * * *` and `30 15 * * *` (UTC) = **21:30 and 23:30 PHT**, after the 9:00 PM draw |
+| Schedule | `40 6`, `40 9`, `30 13`, `30 15` (UTC) = **14:40, 17:40, 21:30 and 23:30 PHT** — after the 2:00 PM, 5:00 PM and 9:00 PM draws |
 | Manual run | Actions → *Update PCSO draw results* → **Run workflow** (`workflow_dispatch`) |
 | On change | commits `data/` with `github-actions[bot]` and pushes to `main` → Pages redeploys |
 | On no change | writes nothing, so there is no diff and no empty commit |
 
 The script refuses to write when the mirror is behind the stored data (a mirror outage would
 otherwise roll the published results back) and stops with an explanation instead; `--allow-rewind`
-overrides that by hand. A failed fetch, a bad row or a weekday that does not match the game's
-schedule fails the workflow run, so a broken refresh is visible in the Actions tab rather than
-silently published.
+overrides that by hand. A failed fetch, a bad row, a weekday that does not match a six-number game's
+schedule, a digit outside 0–9 / 01–31, a draw time outside 2:00 PM / 5:00 PM / 9:00 PM, a date without
+its three draws or a digit prize that is not the fixed amount fails the workflow run, so a broken
+refresh is visible in the Actions tab rather than silently published.
 
 ### By hand
 
@@ -155,7 +196,8 @@ python3 tools/update_draws.py --offline  # rebuild from tools/raw/*.json without
 ```
 
 It rewrites `data/pcso_draws.json` and `data/pcso_draws.js` and prints one line per game plus any
-warnings (unexpected weekday, duplicate date). Commit the two data files.
+warnings (unexpected weekday, duplicate date or slot, a date missing one of its three digit draws, a
+digit prize that is not the fixed amount). Commit the two data files.
 
 Every count, date and label on `index.html` is rendered from the data at load time, so nothing else
 needs editing after a refresh. `<lastmod>` in `sitemap.xml` is the only hand-maintained date; the
@@ -231,9 +273,20 @@ than against itself. It needs `pip install quickjs`.
 `tools/browser_check.py` needs `pip install playwright && playwright install chromium`; it fails on
 any console error, failed request or horizontal overflow at 1440, 768, 390 and 320 px, and writes
 `pcso-site-desktop.png` and `pcso-site-mobile.png` to `../downloads/` (override with `SCREENSHOT_DIR`).
-It also checks the YouTube draw links: the exact search URL built from each game and draw date, the
-official channel URL, one link per history row, that the link follows the selected game, and that
-every link opens in a new tab with `rel="noopener noreferrer"` (77 checks in total, 0 failed).
+It also checks the YouTube draw links: the exact search URL built from each game, draw date and
+2PM/5PM/9PM slot, the official channel URL, one link per history row, that the link follows the
+selected game, and that every link opens in a new tab with `rel="noopener noreferrer"`.
+
+It covers the daily digit games too: the two extra game pills, the 3D and 2D panels, the three slot
+cards of the day, the prize tables (Standard + Rambolito tiers and odds), the per-draw YouTube search
+URLs, the date lookup, the 10-cell / 31-cell heatmaps, the position tables, the shape distribution,
+the picker and its straight/Rambolito history check, and that switching back restores the six-number
+views — at 1440, 768, 390 and 320 px (198 checks, 0 failed).
+
+Screenshots, written to `../downloads/` (`SCREENSHOT_DIR` overrides): `pcso-site-desktop.png`,
+`pcso-site-mobile.png`, `pcso-3d-lotto.png`, `pcso-2d-lotto.png` and the two `-panel.png` viewport
+shots. The full-page captures are taken at 1× because a page this tall exceeds Chromium's capture
+limit at 2×.
 
 ## 8. Compliance notes
 

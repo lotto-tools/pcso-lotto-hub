@@ -91,6 +91,10 @@
   function gameMeta() { return META.games[state.game]; }
   function draws() { return DRAWS[state.game]; }
   function latest() { var d = draws(); return d[d.length - 1]; }
+  /* the two digit games (3D Lotto, 2D Lotto) live in their own panels and are
+     drawn by assets/js/daily.js; state.game carries which one is open */
+  function digitGame() { return Core.getDigitGame(state.game); }
+  function isDaily() { return !!digitGame(); }
 
   function winnersText(n) {
     if (n === 0) return t("d.winnersZero");
@@ -115,11 +119,35 @@
       b.addEventListener("click", function () { selectGame(g.id); });
       bar.appendChild(b);
     });
+    if (Core.DIGIT_GAMES && Core.DIGIT_GAMES.length) {
+      bar.appendChild(el("span", "gamebar-sep", "3×/day"));
+      Core.DIGIT_GAMES.forEach(function (g) {
+        var meta = META.games[g.id];
+        if (!meta) return;
+        var b = el("button", "game-pill game-pill--daily" +
+          (g.id === state.game ? " is-active" : ""));
+        b.type = "button";
+        b.setAttribute("role", "tab");
+        b.setAttribute("aria-selected", g.id === state.game ? "true" : "false");
+        b.dataset.game = g.id;
+        b.appendChild(el("b", null, g.short));
+        b.appendChild(el("span", null, g.times.map(function (x) {
+          return Core.slotShort(x);
+        }).join(" · ")));
+        b.title = t("d.dailyPillTitle", {
+          game: g.name, n: g.perDay, times: g.timeLabels.join(", ")
+        });
+        b.addEventListener("click", function () { selectDaily(g.id); });
+        bar.appendChild(b);
+      });
+    }
   }
 
   /* ---------- hero ---------- */
   function renderHero() {
     var g = game(), d = latest(), m = gameMeta();
+    if ($("heroPrizeLabel")) $("heroPrizeLabel").textContent = t("d.heroPrizeLabel");
+    if ($("heroNetLabel")) $("heroNetLabel").textContent = t("d.heroNetLabel");
     $("heroGameName").textContent = g.name;
     $("heroDrawDate").textContent = t("d.heroLatest", { wd: wd(d.d), date: date(d.d) });
     var ballsBox = $("heroBalls");
@@ -669,13 +697,26 @@
     if ($("dataUpdated")) $("dataUpdated").textContent = date(META.collectedAt);
   }
 
-  /* ---------- tabs ---------- */
+  /* ---------- tabs ----------
+     The five 6-number games and the two digit games share the same tab bar.
+     Which panel a tab opens depends on the game that is selected. */
   var TABS = { results: "panel-results", stats: "panel-stats", generator: "panel-generator", calc: "panel-calc" };
+  var DAILY_TABS = { results: "panel-daily-results", stats: "panel-daily-stats",
+                     generator: "panel-daily-generator", calc: "panel-calc" };
+
+  function panelFor(tab) { return (isDaily() ? DAILY_TABS : TABS)[tab]; }
 
   function paintTabs() {
-    Object.keys(TABS).forEach(function (k) {
-      var panel = $(TABS[k]);
-      if (panel) panel.hidden = k !== state.tab;
+    var ids = [], seen = {};
+    [TABS, DAILY_TABS].forEach(function (map) {
+      Object.keys(map).forEach(function (k) {
+        if (!seen[map[k]]) { seen[map[k]] = 1; ids.push(map[k]); }
+      });
+    });
+    var target = panelFor(state.tab);
+    ids.forEach(function (id) {
+      var panel = $(id);
+      if (panel) panel.hidden = id !== target;
     });
     var tabs = $("tabBar").querySelectorAll(".tab");
     for (var i = 0; i < tabs.length; i++) {
@@ -692,7 +733,11 @@
     if (!TABS[name]) return;
     state.tab = name;
     paintTabs();
-    if (name === "stats") renderStats();
+    if (isDaily()) {
+      if (window.PCSODaily) window.PCSODaily.renderTab(name);
+    } else {
+      if (name === "stats") renderStats();
+    }
     if (name === "calc") renderCalc();
     if (scroll) {
       var bar = document.querySelector(".tabbar");
@@ -707,6 +752,7 @@
 
   /* ---------- game selection ---------- */
   function selectGame(id) {
+    if (Core.getDigitGame(id)) { selectDaily(id); return; }
     state.game = id;
     state.fixed = [];
     state.excluded = [];
@@ -725,6 +771,19 @@
     renderNumGrid();
     renderCombos();
     showGenStatus("");
+  }
+
+  /* ---------- daily digit games ---------- */
+  function selectDaily(id) {
+    var g = Core.getDigitGame(id);
+    if (!g) return;
+    state.game = id;
+    state.fixed = [];
+    state.excluded = [];
+    state.combos = null;
+    renderGameBar();
+    paintTabs();
+    if (window.PCSODaily) window.PCSODaily.selectGame(id);
   }
 
   /* ---------- events ---------- */
@@ -797,6 +856,7 @@
     renderDateResult(state.dateQuery || $("dateInput").value);
     paintTabs();
     showGenStatus(state.comboNote, !!state.comboNote);
+    if (window.PCSODaily) window.PCSODaily.renderAll();
   }
 
   /* ---------- boot ---------- */
@@ -821,9 +881,11 @@
       if (map[hash]) selectTab(map[hash]);
     }
     paintTabs();
+    if (window.PCSODaily) window.PCSODaily.boot();
   }
 
-  window.PCSOApp = { renderAll: renderAll, boot: boot, state: state };
+  window.PCSOApp = { renderAll: renderAll, boot: boot, state: state,
+                     selectDaily: selectDaily, selectTab: selectTab };
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
   else boot();

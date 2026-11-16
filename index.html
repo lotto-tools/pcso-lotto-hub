@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title data-i18n="meta.title">Resulta ng PCSO Lotto, Estadistika ng Numero at 20% Buwis sa Premyo | PCSO Lotto Hub</title>
-<meta name="description" content="Opisyal na resulta ng PCSO lotto para sa Ultra Lotto 6/58, Grand Lotto 6/55, Super Lotto 6/49, Mega Lotto 6/45 at Lotto 6/42, kasama ang totoong frequency ng numero, hot at cold number, overdue number, smart na generator ng kombinasyon at kalkulador ng 20% TRAIN tax sa piso." data-i18n="meta.desc" data-i18n-attr="content">
+<title data-i18n="meta.title">Resulta ng PCSO Lotto, 3D at 2D, Estadistika ng Numero at 20% Buwis sa Premyo | PCSO Lotto Hub</title>
+<meta name="description" content="Resulta ng PCSO lotto para sa Ultra Lotto 6/58, Grand Lotto 6/55, Super Lotto 6/49, Mega Lotto 6/45, Lotto 6/42, 3D Lotto (Swertres) at 2D Lotto (EZ2) — tatlong draw kada araw sa 2PM, 5PM at 9PM — kasama ang totoong frequency ng numero, hot at cold number, overdue number, simpleng generator ng kombinasyon at kalkulador ng 20% TRAIN tax sa piso." data-i18n="meta.desc" data-i18n-attr="content">
 <meta name="theme-color" content="#0b1a38">
 <link rel="canonical" href="https://lotto-tools.github.io/pcso-lotto-hub/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PCSO Lotto Hub">
-<meta property="og:title" content="Resulta ng PCSO Lotto, Estadistika at 20% Buwis sa Premyo" data-i18n="meta.ogTitle" data-i18n-attr="content">
-<meta property="og:description" content="Limang jackpot game ng PCSO, bawat totoong draw mula Enero 2024, estadistika ng numero at kalkulador ng TRAIN Law tax." data-i18n="meta.ogDesc" data-i18n-attr="content">
+<meta property="og:title" content="Resulta ng PCSO Lotto, 3D at 2D, Estadistika at Buwis sa Premyo" data-i18n="meta.ogTitle" data-i18n-attr="content">
+<meta property="og:description" content="Limang jackpot game at ang 3D (Swertres) at 2D (EZ2) na tatlong beses kada araw, bawat totoong draw mula Enero 2024, estadistika ng numero at kalkulador ng TRAIN Law tax." data-i18n="meta.ogDesc" data-i18n-attr="content">
 <meta property="og:url" content="https://lotto-tools.github.io/pcso-lotto-hub/">
 <meta property="og:image" content="https://lotto-tools.github.io/pcso-lotto-hub/assets/img/og-cover.png">
 <meta property="og:locale" content="tl_PH">
@@ -55,11 +55,11 @@
   <div class="wrap hero-grid">
     <div>
       <p class="eyebrow"><span class="live-dot" aria-hidden="true"></span><span data-i18n="hero.updated">Na-update ang datos ng PCSO</span> <span id="dataUpdated">Nob 16, 2026</span></p>
-      <h1 data-i18n="hero.h1">Resulta ng PCSO lotto, estadistika ng mga numero at ang 20% buwis sa premyo — nasa isang lugar lang</h1>
-      <p class="hero-sub" data-i18n="hero.sub">Limang jackpot game, bawat draw mula Enero 2024 mula sa mga talaan ng resulta ng PCSO, kasama ang totoong estadistika ng frequency, overdue at suma sa likod ng mga ito, isang generator na may filter, at kalkulador ng TRAIN Law tax at pag-claim sa piso.</p>
+      <h1 data-i18n="hero.h1">Resulta ng PCSO lotto, 3D at 2D, estadistika ng mga numero at ang 20% buwis sa premyo — nasa isang lugar lang</h1>
+      <p class="hero-sub" data-i18n="hero.sub">Limang jackpot game at ang 3D (Swertres) at 2D (EZ2) na may tatlong draw kada araw, bawat draw mula Enero 2024 mula sa mga talaan ng resulta ng PCSO, kasama ang totoong estadistika ng frequency, overdue at suma sa likod ng mga ito, isang generator na may filter, at kalkulador ng TRAIN Law tax at pag-claim sa piso.</p>
       <div class="hero-badges">
         <span id="badgeDraws">2,230 draw</span>
-        <span>6/58 · 6/55 · 6/49 · 6/45 · 6/42</span>
+        <span>6/58 · 6/55 · 6/49 · 6/45 · 6/42 · 3D · 2D</span>
         <span id="badgeCoverage">Ene 2, 2024 – Nob 16, 2026</span>
         <span data-i18n="hero.noAccount">Walang account na kailangan</span>
       </div>
@@ -73,11 +73,11 @@
       <div class="hero-balls" id="heroBalls"></div>
       <dl class="hero-prize">
         <div>
-          <dt data-i18n="hero.jackpot">Jackpot (bago ang buwis)</dt>
+          <dt data-i18n="hero.jackpot" id="heroPrizeLabel">Jackpot (bago ang buwis)</dt>
           <dd id="heroJackpot">₱537,913,610.81</dd>
         </div>
         <div>
-          <dt data-i18n="hero.net">Pagkatapos ng 20% TRAIN tax</dt>
+          <dt data-i18n="hero.net" id="heroNetLabel">Pagkatapos ng 20% TRAIN tax</dt>
           <dd class="accent" id="heroNet">₱430,330,888.65</dd>
         </div>
       </dl>
@@ -418,6 +418,227 @@
     </div>
   </section>
 
+  <!-- ================= DAILY GAMES: 3D LOTTO · 2D LOTTO ================= -->
+  <section class="panel" id="panel-daily-results" aria-label="Resulta ng 3D at 2D Lotto" hidden>
+    <div class="card">
+      <div class="draw-head">
+        <div>
+          <h2 class="card-title" id="dailyLatestTitle">3D Lotto (Swertres) — pinakabagong resulta</h2>
+          <p class="card-desc" id="dailyLatestDate">9:00 PM · Linggo, Nobyembre 16, 2026</p>
+        </div>
+        <span class="badge badge--brand" id="dailyStored">3,120 draw · 1,040 araw</span>
+      </div>
+      <div class="draw-balls" id="dailyLatestDigits"></div>
+      <dl class="stat-grid">
+        <div class="stat is-key">
+          <dt data-i18n="daily.prize">Premyo (Standard, kada ₱10 na taya)</dt>
+          <dd id="dailyPrize">₱4,500.00</dd>
+        </div>
+        <div class="stat">
+          <dt data-i18n="daily.winners">Nanalo</dt>
+          <dd id="dailyWinners">216<small data-i18n="daily.winnersSmall">sa 9:00 PM na draw</small></dd>
+        </div>
+        <div class="stat">
+          <dt data-i18n="daily.afterTax">Neto pagkatapos ng buwis</dt>
+          <dd id="dailyNet">₱4,500.00<small data-i18n="daily.taxFreeSmall">₱10,000 pababa, kaya walang buwis</small></dd>
+        </div>
+        <div class="stat">
+          <dt data-i18n="daily.next">Susunod na draw</dt>
+          <dd id="dailyNext" style="font-size:13px">2:00 PM PHT · Nob 17, 2026</dd>
+        </div>
+      </dl>
+      <div class="video-row" id="dailyVideoLinks"></div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <div class="draw-head">
+        <div>
+          <h2 class="card-title" data-i18n="daily.todayTitle">Tatlong draw ngayon</h2>
+          <p class="card-desc" data-i18n="daily.todayDesc">2:00 PM · 5:00 PM · 9:00 PM PHT, araw-araw — pinakabago muna.</p>
+        </div>
+        <span class="badge" id="dailyTodayDate">Nob 16, 2026</span>
+      </div>
+      <div class="slot-grid" id="dailyToday"></div>
+      <p class="table-note" id="dailyTodayNote"></p>
+    </div>
+
+    <div class="grid-2" style="margin-top:16px">
+      <div class="card">
+        <h2 class="card-title" data-i18n="daily.findTitle">Hanapin ang draw sa petsa</h2>
+        <p class="card-desc" data-i18n="daily.findDesc">Pumili ng kahit anong petsa mula Enero 2, 2024 hanggang ngayon. Ipapakita ang tatlong draw ng araw na iyon; kung walang draw, ang pinakamalapit na naunang petsa ang lalabas.</p>
+        <form class="lookup" id="dailyDateForm">
+          <label class="sr-only" for="dailyDateInput" data-i18n="res.dateLabel">Petsa ng draw</label>
+          <input class="input" type="date" id="dailyDateInput" min="2024-01-02" max="2026-11-16" required>
+          <button class="btn btn--primary" type="submit" data-i18n="res.showDraw">Ipakita ang draw</button>
+          <button class="btn btn--ghost btn--sm" type="button" id="dailyBtnLatest" data-i18n="res.latestBtn">Pinakabago</button>
+        </form>
+        <div id="dailyDateResult" style="margin-top:14px"></div>
+      </div>
+      <div class="card">
+        <h2 class="card-title" data-i18n="daily.prizeTitle">Magkano ang bayad ng nanalong ticket</h2>
+        <p class="card-desc" data-i18n="daily.prizeDesc">Takdang premyo kada ₱10 na taya. Ang Standard ay nagbabayad lang kapag eksaktong ayos ang pagkakabunot; ang Rambolito ay kahit anong ayos.</p>
+        <div class="table-scroll">
+          <table class="tier-table" id="dailyPrizeTable">
+            <thead>
+              <tr><th scope="col" data-i18n="daily.play">Laro</th><th scope="col" data-i18n="th.oddsShort">Odds</th><th scope="col" data-i18n="th.prize">Premyo</th></tr>
+            </thead>
+            <tbody id="dailyPrizeBody"></tbody>
+          </table>
+        </div>
+        <p class="table-note" id="dailyPrizeNote"></p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <div class="draw-head">
+        <div>
+          <h2 class="card-title" data-i18n="daily.histTitle">Kasaysayan ng draw</h2>
+          <p class="card-desc" id="dailyHistoryLabel">Lahat ng naitalang draw ng game na ito</p>
+        </div>
+        <div class="lookup">
+          <label class="sr-only" for="dailyHistoryCount" data-i18n="res.rows">Row</label>
+          <select class="input" id="dailyHistoryCount">
+            <option value="20" data-i18n="res.opt20">Huling 20 draw</option>
+            <option value="50" selected data-i18n="res.opt50">Huling 50 draw</option>
+            <option value="100" data-i18n="res.opt100">Huling 100 draw</option>
+            <option value="0" data-i18n="res.optAll">Lahat ng naitalang draw</option>
+          </select>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table class="data">
+          <thead>
+            <tr>
+              <th scope="col" data-i18n="th.date">Petsa ng draw</th>
+              <th scope="col" data-i18n="daily.slot">Oras ng draw</th>
+              <th scope="col" data-i18n="th.day">Araw</th>
+              <th scope="col" data-i18n="th.nums">Mga tumamang numero</th>
+              <th scope="col" data-i18n="daily.prizeCol">Premyo (Standard)</th>
+              <th scope="col" data-i18n="th.winners">Nanalo</th>
+              <th scope="col" data-i18n="th.video">Video ng draw</th>
+            </tr>
+          </thead>
+          <tbody id="dailyHistoryBody"></tbody>
+        </table>
+      </div>
+      <p class="table-note" data-i18n="daily.note1">Nasa ayos ng pagkakabunot ang mga digit, dahil ang Standard na ticket ng 3D at 2D ay nagbabayad lang sa ganoong ayos. Ang ₱10 na Standard na panalo ay ₱4,500 sa 3D Lotto at ₱4,000 sa 2D Lotto — parehong pasok sa ₱10,000 na walang buwis.</p>
+      <p class="table-note" data-i18n="daily.note2">Binubuksan ng “Panoorin ang draw” ang isang YouTube search para sa game, petsa at 2PM, 5PM o 9PM na draw, dahil live ineere ng PCSO ang bawat draw at doon nito itinatago ang mga recording sa opisyal nitong channel.</p>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-daily-stats" aria-label="Estadistika ng 3D at 2D Lotto" hidden>
+    <div class="card">
+      <div class="draw-head">
+        <div>
+          <h2 class="card-title" id="dailyStatsTitle">3D Lotto (Swertres) — estadistika ng numero</h2>
+          <p class="card-desc" id="dailyStatsRange">Huling 50 draw ng game na ito</p>
+        </div>
+        <div class="segmented" id="dailyRangeSeg" role="group" aria-label="Saklaw ng draw">
+          <button type="button" data-range="20" data-i18n="stats.r20">Huling 20</button>
+          <button type="button" data-range="50" class="is-active" data-i18n="stats.r50">Huling 50</button>
+          <button type="button" data-range="100" data-i18n="stats.r100">Huling 100</button>
+          <button type="button" data-range="0" data-i18n="stats.rAll">Lahat ng naitala</button>
+        </div>
+      </div>
+      <dl class="stat-grid">
+        <div class="stat is-key"><dt data-i18n="stats.size">Mga draw na sinuri</dt><dd id="dailyStatsSize">50</dd></div>
+        <div class="stat"><dt data-i18n="daily.expected">Inaasahang paglabas kada numero</dt><dd id="dailyStatsExpected">15.0</dd></div>
+        <div class="stat"><dt data-i18n="daily.hotTop">Pinakamadalas</dt><dd id="dailyStatsHot">7<small data-i18n="daily.hotTopSmall">beses lumabas sa saklaw</small></dd></div>
+        <div class="stat"><dt data-i18n="stats.overdueTop">Pinakamatagal nang hindi lumalabas</dt><dd id="dailyStatsOverdue">0<small data-i18n="stats.overdueSmall">draw mula nang huli itong lumabas</small></dd></div>
+      </dl>
+      <div class="divider"></div>
+      <h3 class="card-title" data-i18n="daily.heat">Heatmap ng frequency</h3>
+      <p class="card-desc" data-i18n="daily.heatDesc">Ilang beses lumabas ang bawat numero sa napiling saklaw. Mas matingkad ang asul kapag mas madalas itong lumabas kaysa sa karaniwan sa saklaw na ito.</p>
+      <div class="heatmap" id="dailyHeatmap"></div>
+      <div class="chip-row" id="dailyHeatLegend" style="margin-top:12px"></div>
+    </div>
+
+    <div class="grid-3" style="margin-top:16px">
+      <div class="card">
+        <h3 class="card-title" data-i18n="stats.hot">Hot na numero</h3>
+        <p class="card-desc" data-i18n="stats.hotDesc">Pinakamadalas lumabas sa saklaw na ito.</p>
+        <div class="chip-row" id="dailyHotChips"></div>
+      </div>
+      <div class="card">
+        <h3 class="card-title" data-i18n="stats.cold">Cold na numero</h3>
+        <p class="card-desc" data-i18n="stats.coldDesc">Pinakamadalang lumabas sa saklaw na ito.</p>
+        <div class="chip-row" id="dailyColdChips"></div>
+      </div>
+      <div class="card">
+        <h3 class="card-title" data-i18n="stats.overdueTitle">Pinakamatagal nang hindi lumalabas</h3>
+        <p class="card-desc" data-i18n="stats.overdueDesc">Bilang ng draw mula nang huling lumabas ang numero.</p>
+        <div class="chip-row" id="dailyOverdueChips"></div>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-top:16px">
+      <div class="card">
+        <h3 class="card-title" data-i18n="daily.posTitle">Posisyon kada posisyon</h3>
+        <p class="card-desc" data-i18n="daily.posDesc">Ilang beses lumabas ang bawat numero sa bawat posisyon ng draw: tatlong posisyon sa 3D Lotto, dalawa sa 2D Lotto.</p>
+        <div class="table-scroll">
+          <table class="data compact" id="dailyPosTable">
+            <thead id="dailyPosHead"></thead>
+            <tbody id="dailyPosBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <h3 class="card-title" data-i18n="daily.shapeTitle">Hugis ng nanalong kombinasyon</h3>
+        <p class="card-desc" data-i18n="daily.shapeDesc">Kung magkaiba lahat ang digit, may pares, o pareho lahat.</p>
+        <div id="dailyShapeChart"></div>
+      </div>
+    </div>
+
+    <div class="notice notice--warn" style="margin-top:16px">
+      <span aria-hidden="true">!</span>
+      <span data-i18n-html="daily.warn"><b>Ano ang kaya at hindi kaya ng estadistika.</b> Bawat draw ay hiwalay na pangyayari. Ang frequency, gap at posisyon ay naglalarawan ng nangyari na sa talaan ng PCSO; hindi nila binabago ang tsansa sa susunod na draw, na laging 1 sa 1,000 sa 3D Lotto at 1 sa 961 sa 2D Lotto. Gamitin ang pahinang ito para tuklasin ang datos, hindi bilang hula.</span>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-daily-generator" aria-label="Tagapili ng numero para sa 3D at 2D" hidden>
+    <div class="gen-layout">
+      <div class="card">
+        <h2 class="card-title" id="dailyGenTitle">3D Lotto (Swertres) — simpleng tagapili</h2>
+        <p class="card-desc" data-i18n="daily.genDesc">Pindutin ang mga numero para isama o alisin, pumili ng hugis ng kombinasyon, tapos gumawa ng limang kombinasyon at tingnan kung paano ang bawat isa ay naging resulta sa lahat ng naitalang draw.</p>
+
+        <div class="field">
+          <div class="field-label">
+            <strong data-i18n="daily.pad">Talahanayan ng numero</strong>
+            <div class="segmented" id="dailyPaintMode" role="group" aria-label="Aksyon sa pagpindot">
+              <button type="button" data-mode="fixed" class="is-active" data-i18n="gen.include">Isama</button>
+              <button type="button" data-mode="excluded" data-i18n="gen.exclude">I-alis</button>
+            </div>
+          </div>
+          <div class="num-grid" id="dailyNumGrid"></div>
+          <p class="table-note" id="dailyPickSummary">Pinapayagang numero: lahat · Hindi kasama: wala</p>
+        </div>
+
+        <div class="field">
+          <div class="field-label"><strong data-i18n="daily.shape">Hugis ng kombinasyon</strong></div>
+          <select class="input" id="dailyShape"></select>
+        </div>
+
+        <div class="lookup">
+          <button class="btn btn--primary" type="button" id="dailyBtnGenerate" data-i18n="daily.genBtn">Gumawa ng 5 kombinasyon</button>
+          <button class="btn btn--sm" type="button" id="dailyBtnClear" data-i18n="daily.genClear">I-reset ang filter</button>
+        </div>
+        <p class="table-note" id="dailyOddsLine"></p>
+        <p class="notice" id="dailyGenStatus" style="margin-top:10px;display:none"></p>
+      </div>
+
+      <div class="card">
+        <h2 class="card-title" data-i18n="daily.listTitle">Mga kombinasyon mo</h2>
+        <p class="card-desc" data-i18n="daily.listDesc">Bawat pili ay hinahambing sa lahat ng naitalang draw ng game na ito: eksaktong tamaan, at Rambolito na tamaan kahit anong ayos.</p>
+        <div id="dailyGameList" class="game-list">
+          <div class="empty"><strong data-i18n="daily.genEmptyTitle">Wala pang kombinasyon</strong><span data-i18n="daily.genEmptyDesc">Piliin ang mga filter, tapos pindutin ang “Gumawa ng 5 kombinasyon”.</span></div>
+        </div>
+        <div class="divider"></div>
+        <h3 class="card-title" data-i18n="daily.howTitle">Paano basahin ang history check</h3>
+        <p class="card-desc" style="margin-bottom:6px" data-i18n="daily.howDesc">Ang eksaktong tamaan ay parehong digit sa parehong ayos — ito ang Standard na premyo. Ang Rambolito ay parehong digit sa ibang ayos, na may mas maliit na premyo. Sanggunian ito, hindi hula.</p>
+      </div>
+    </div>
+  </section>
+
   <!-- ================= ALWAYS-VISIBLE CONTENT ================= -->
   <section class="section-head" id="overview">
     <div>
@@ -435,6 +656,31 @@
       </table>
     </div>
     <p class="table-note" data-i18n="over.note">Ang odds ay bilang ng posibleng 6-numero na kombinasyon sa bawat pool: 58 choose 6, 55 choose 6, at iba pa. Ang gabi ng draw ay ang iskedyul ng PCSO na sinusundan ng mga naitalang petsa ng draw.</p>
+  </div>
+
+  <section class="section-head" id="daily">
+    <div>
+      <h2 data-i18n="daily.overTitle">Ang dalawang araw-araw na digit game</h2>
+      <p data-i18n="daily.overDesc">Ang 3D Lotto (Swertres) at 2D Lotto (EZ2) ay may tatlong draw kada araw at takdang premyo kada ₱10 na taya.</p>
+    </div>
+  </section>
+  <div class="card">
+    <div class="table-scroll">
+      <table class="data">
+        <thead>
+          <tr>
+            <th scope="col" data-i18n="th.game">Game</th>
+            <th scope="col" data-i18n="th.numbers">Numero</th>
+            <th scope="col" data-i18n="th.time">Oras ng draw</th>
+            <th scope="col" data-i18n="daily.thPrize10">Premyo kada ₱10</th>
+            <th scope="col" data-i18n="th.stored">Naitalang draw</th>
+            <th scope="col" data-i18n="daily.open">Buksan</th>
+          </tr>
+        </thead>
+        <tbody id="dailyOverviewBody"></tbody>
+      </table>
+    </div>
+    <p class="table-note" data-i18n="daily.overNote">Buong talaan ng bawat draw mula Enero 2, 2024, kasama ang 2PM, 5PM at 9PM na resulta, estadistika ng digit at simpleng tagapili ng kombinasyon. Ang Standard na premyo ay ₱4,500 sa 3D at ₱4,000 sa 2D kada ₱10; ang Rambolito, ang kahit anong ayos na taya, ay ₱750 o ₱1,500 sa 3D at ₱2,000 sa 2D.</p>
   </div>
 
   <section class="section-head">
@@ -484,6 +730,7 @@
 <script src="data/pcso_draws.js"></script>
 <script src="assets/js/lotto-core.js"></script>
 <script src="assets/js/i18n.js"></script>
+<script src="assets/js/daily.js"></script>
 <script src="assets/js/app.js"></script>
 </body>
 </html>

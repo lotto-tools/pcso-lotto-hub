@@ -20,6 +20,33 @@
       days: ["Tue", "Thu", "Sat"], dayLabel: "Tuesday · Thursday · Saturday", floor: 5900000 }
   ];
 
+  /* ---------- daily digit games (3D Swertres · 2D EZ2) ----------
+     Both games draw three times a day (2:00 PM, 5:00 PM, 9:00 PM PHT) and pay
+     a fixed prize per ₱10 play. The order of the drawn digits is kept exactly
+     as drawn: a Standard ticket pays only in that order, and Rambolito — the
+     any-order play — is a separate bet with its own, smaller prize. */
+  var DIGIT_TIMES = ["14:00", "17:00", "21:00"];
+  var DIGIT_TIME_LABELS = ["2:00 PM", "5:00 PM", "9:00 PM"];
+  var DIGIT_TIME_SHORT = { "14:00": "2PM", "17:00": "5PM", "21:00": "9PM" };
+
+  var DIGIT_GAMES = [
+    { id: "3d", name: "3D Lotto (Swertres)", short: "3D", kind: "digits",
+      yt: "3D Lotto Swertres",
+      digits: 3, maxValue: 9, minValue: 0, pad: false, perDay: 3,
+      times: DIGIT_TIMES.slice(), timeLabels: DIGIT_TIME_LABELS.slice(),
+      prize: 4500, rambolito: { different: 750, pair: 1500 }, combos: 1000 },
+    { id: "2d", name: "2D Lotto (EZ2)", short: "2D", kind: "digits",
+      yt: "2D Lotto EZ2",
+      digits: 2, maxValue: 31, minValue: 1, pad: true, perDay: 3,
+      times: DIGIT_TIMES.slice(), timeLabels: DIGIT_TIME_LABELS.slice(),
+      prize: 4000, rambolito: { different: 2000 }, combos: 961 }
+  ];
+
+  function getDigitGame(id) {
+    for (var i = 0; i < DIGIT_GAMES.length; i++) if (DIGIT_GAMES[i].id === id) return DIGIT_GAMES[i];
+    return null;
+  }
+
   var DOW = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
                 "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -224,6 +251,296 @@
     var lo = 1 + 2 + 3 + 4 + 5 + 6;
     var hi = (max - 5) + (max - 4) + (max - 3) + (max - 2) + (max - 1) + max;
     return { min: lo, max: hi, avg: (lo + hi) / 2 };
+  }
+
+  /* ---------- digit helpers ---------- */
+  function padDigit(v, game) {
+    var s = String(Math.abs(Math.round(Number(v) || 0)));
+    return game && game.pad ? (s.length < 2 ? "0" + s : s) : s;
+  }
+  /* the winning digits as written on a ticket: "798" or "23 06" */
+  function digitCode(nums) {
+    var out = [];
+    for (var i = 0; i < nums.length; i++) out.push(String(nums[i]));
+    return out.join(" ");
+  }
+  function digitSum(nums) {
+    var s = 0;
+    for (var i = 0; i < nums.length; i++) s += Number(nums[i]);
+    return s;
+  }
+  function digitShape(nums) {
+    var seen = {}, i, key, distinct = 0;
+    for (i = 0; i < nums.length; i++) {
+      key = String(nums[i]);
+      if (!seen[key]) { seen[key] = 1; distinct++; }
+    }
+    if (distinct === 1) return "allSame";
+    if (distinct === nums.length) return "allDiff";
+    return "onePair";
+  }
+  function sameMultiset(a, b) {
+    if (a.length !== b.length) return false;
+    var x = a.map(String).sort(), y = b.map(String).sort();
+    for (var i = 0; i < x.length; i++) if (x[i] !== y[i]) return false;
+    return true;
+  }
+  /* Prize for a winning ticket. Standard pays the top prize; Rambolito, the
+     any-order play, pays less and is not offered when every digit is the same
+     (there is only one arrangement to cover). */
+  function digitPrize(game, nums) {
+    var g = typeof game === "string" ? getDigitGame(game) : game;
+    var shape = digitShape(nums.length ? nums : [0]);
+    var rb = null;
+    if (g && g.rambolito) {
+      if (shape === "allDiff" && g.rambolito.different) rb = g.rambolito.different;
+      else if (shape === "onePair" && g.rambolito.pair) rb = g.rambolito.pair;
+    }
+    return { standard: g ? g.prize : 0, rambolito: rb, shape: shape };
+  }
+  /* Straight odds are the number of possible combinations. An any-order
+     (Rambolito) ticket covers 6 arrangements when three digits all differ and
+     3 when two digits repeat; on EZ2 a pair of different numbers covers 2. */
+  function digitOdds(game) {
+    var g = typeof game === "string" ? getDigitGame(game) : game;
+    var out = { standard: 0, rambolitoDifferent: null, rambolitoPair: null };
+    if (!g) return out;
+    out.standard = Math.pow(g.maxValue - g.minValue + 1, g.digits);
+    if (g.rambolito) {
+      var perm = 1, i;
+      for (i = 2; i <= g.digits; i++) perm *= i;
+      if (g.rambolito.different) out.rambolitoDifferent = Math.round(out.standard / perm);
+      if (g.rambolito.pair) out.rambolitoPair = Math.round(out.standard / g.digits);
+    }
+    return out;
+  }
+  function slotLabel(t) {
+    for (var i = 0; i < DIGIT_TIMES.length; i++) if (DIGIT_TIMES[i] === t) return DIGIT_TIME_LABELS[i];
+    return t;
+  }
+  function slotShort(t) { return DIGIT_TIME_SHORT[t] || t; }
+
+  function manilaNow() {
+    try {
+      var f = new Intl.DateTimeFormat("en-GB", {
+        timeZone: "Asia/Manila", year: "numeric", month: "2-digit", day: "2-digit",
+        hour: "2-digit", minute: "2-digit", hourCycle: "h23"
+      });
+      var parts = {};
+      f.formatToParts(new Date()).forEach(function (p) { parts[p.type] = p.value; });
+      return { iso: parts.year + "-" + parts.month + "-" + parts.day,
+               hhmm: parts.hour + ":" + parts.minute };
+    } catch (e) {
+      var d = new Date();
+      return { iso: isoOf(d), hhmm: "12:00" };
+    }
+  }
+  /* The next of the three daily draws that has not started yet. */
+  function nextDailyDraw(game, lang, now) {
+    now = now || manilaNow();
+    var base = parseISO(now.iso);
+    var g = typeof game === "string" ? getDigitGame(game) : game;
+    var times = (g && g.times) || DIGIT_TIMES;
+    for (var i = 0; i < times.length; i++) {
+      if (times[i] > now.hhmm) {
+        return { iso: now.iso, time: times[i],
+                 label: slotLabel(times[i]) + " PHT · " + formatDate(now.iso, lang) };
+      }
+    }
+    var tomorrow = new Date(base.getTime() + 86400000);
+    return { iso: isoOf(tomorrow), time: times[0],
+             label: slotLabel(times[0]) + " PHT · " + formatDate(isoOf(tomorrow), lang) };
+  }
+
+  /* ---------- digit statistics ---------- */
+  function analyzeDigits(draws, game, range) {
+    var g = typeof game === "string" ? getDigitGame(game) : game;
+    if (!g) g = DIGIT_GAMES[0];
+    var lo = g.minValue, hi = g.maxValue;
+    var size = range && range > 0 ? Math.min(range, (draws || []).length) : (draws || []).length;
+    var res = {
+      game: g.id, size: size, lo: lo, hi: hi, digits: g.digits,
+      freq: [], gap: [], posFreq: [], posGap: [],
+      hot: [], cold: [], overdue: [], expected: 0,
+      shapes: { allSame: 0, onePair: 0, allDiff: 0 },
+      sums: [], avgSum: 0, minSum: 0, maxSum: 0,
+      from: null, to: null, latest: null
+    };
+    var v, p;
+    for (v = lo; v <= hi; v++) { res.freq.push(0); res.gap.push(0); }
+    for (p = 0; p < g.digits; p++) {
+      var f = [], gap = [];
+      for (v = lo; v <= hi; v++) { f.push(0); gap.push(0); }
+      res.posFreq.push(f);
+      res.posGap.push(gap);
+    }
+    if (!size) return res;
+
+    var subset = draws.slice(draws.length - size);
+    res.from = subset[0].d;
+    res.to = subset[subset.length - 1].d;
+    res.latest = subset[subset.length - 1];
+    res.expected = (g.digits * size) / (hi - lo + 1);
+
+    var lastSeen = [], posLast = [], i, k;
+    for (v = lo; v <= hi; v++) lastSeen[v] = -1;
+    for (p = 0; p < g.digits; p++) {
+      posLast.push([]);
+      for (v = lo; v <= hi; v++) posLast[p][v] = -1;
+    }
+
+    for (i = 0; i < size; i++) {
+      var nums = subset[i].n;
+      for (k = 0; k < nums.length && k < g.digits; k++) {
+        var val = Number(nums[k]);
+        res.freq[val - lo] += 1;
+        res.posFreq[k][val - lo] += 1;
+        lastSeen[val] = i;
+        posLast[k][val] = i;
+      }
+      res.shapes[digitShape(nums)] += 1;
+      res.sums.push(digitSum(nums));
+    }
+
+    for (v = lo; v <= hi; v++) {
+      res.gap[v - lo] = lastSeen[v] === -1 ? size : size - 1 - lastSeen[v];
+      for (p = 0; p < g.digits; p++) {
+        res.posGap[p][v - lo] = posLast[p][v] === -1 ? size : size - 1 - posLast[p][v];
+      }
+    }
+
+    var all = [];
+    for (v = lo; v <= hi; v++) all.push({ n: v, count: res.freq[v - lo], gap: res.gap[v - lo] });
+    res.hot = all.slice().sort(function (a, b) { return b.count - a.count || a.n - b.n; }).slice(0, 5);
+    res.cold = all.slice().sort(function (a, b) { return a.count - b.count || a.n - b.n; }).slice(0, 5);
+    res.overdue = all.slice().sort(function (a, b) { return b.gap - a.gap || a.n - b.n; }).slice(0, 5);
+
+    res.avgSum = res.sums.reduce(function (a, b) { return a + b; }, 0) / size;
+    res.minSum = Math.min.apply(null, res.sums);
+    res.maxSum = Math.max.apply(null, res.sums);
+    return res;
+  }
+
+  /* ---------- digit combination picker ----------
+     Positions may be fixed, values may be excluded, and the shape of the
+     combination can be narrowed (all different digits, one pair, all the same). */
+  function digitError(msg, key, vars) {
+    return { error: msg, errorKey: key, errorVars: vars || null, games: [] };
+  }
+
+  function generateDigits(opts) {
+    opts = opts || {};
+    var g = typeof opts.game === "string" ? getDigitGame(opts.game) : (opts.game || DIGIT_GAMES[0]);
+    if (!g) g = DIGIT_GAMES[0];
+    var count = opts.count || 5;
+    var lo = g.minValue, hi = g.maxValue;
+    var excluded = (opts.excluded || []).map(Number);
+    var fixed = (opts.fixed || []).map(function (x) { return x == null ? null : Number(x); });
+    var shape = opts.shape || "any";
+    var i, v;
+
+    for (i = 0; i < excluded.length; i++) {
+      if (!(excluded[i] >= lo && excluded[i] <= hi))
+        return digitError("Number " + excluded[i] + " is outside " + lo + "–" + hi + ".",
+                          "d.dErrExcludedOut", { n: excluded[i], min: lo, max: hi });
+    }
+    for (i = 0; i < fixed.length; i++) {
+      if (fixed[i] === null) continue;
+      if (!(fixed[i] >= lo && fixed[i] <= hi))
+        return digitError("Fixed number " + fixed[i] + " is outside " + lo + "–" + hi + ".",
+                          "d.dErrFixedOut", { n: fixed[i], min: lo, max: hi });
+      if (excluded.indexOf(fixed[i]) !== -1)
+        return digitError("Number " + fixed[i] + " is both fixed and excluded.",
+                          "d.dErrBoth", { n: fixed[i] });
+    }
+
+    var allowed = [];
+    for (v = lo; v <= hi; v++) if (excluded.indexOf(v) === -1) allowed.push(v);
+    var needed = 0;
+    for (i = 0; i < g.digits; i++) if (i >= fixed.length || fixed[i] === null) needed++;
+    if (!allowed.length && needed)
+      return digitError("Every number is excluded — leave at least one in the pool.",
+                        "d.dErrPoolEmpty", { min: lo, max: hi });
+
+    /* a shape the fixed positions already contradict can never be met */
+    var fixedVals = fixed.slice(0, g.digits).filter(function (x) { return x !== null; });
+    if (fixedVals.length === g.digits && shape !== "any") {
+      var fixedShape = digitShape(fixedVals);
+      var okFixed = (shape === fixedShape) || (shape === "different" && fixedShape === "allDiff")
+        || (shape === "pair" && fixedShape === "onePair");
+      if (!okFixed)
+        return digitError("The fixed digits do not fit the chosen shape.", "d.dErrShapeFixed");
+    }
+
+    function fits(nums) {
+      var s = digitShape(nums);
+      if (shape === "any") return true;
+      if (shape === "allDiff") return s === "allDiff";
+      if (shape === "onePair") return s === "onePair";
+      if (shape === "allSame") return s === "allSame";
+      return true;
+    }
+
+    var games = [], seen = {}, attempts = 0, limit = 20000;
+    while (games.length < count && attempts < limit) {
+      attempts++;
+      var pick = [];
+      for (i = 0; i < g.digits; i++) {
+        if (i < fixed.length && fixed[i] !== null) pick.push(fixed[i]);
+        else pick.push(allowed[Math.floor(Math.random() * allowed.length)]);
+      }
+      if (!fits(pick)) continue;
+      var key = pick.join("-");
+      if (seen[key]) continue;
+      seen[key] = 1;
+      games.push(pick.map(function (x) { return padDigit(x, g); }));
+    }
+    if (!games.length) {
+      return digitError("No combination fits those filters — loosen the shape or the excluded numbers.",
+                        "d.dErrNoCombo");
+    }
+    return { error: null, games: games, partial: games.length < count, requested: count };
+  }
+
+  /* How a candidate combination would have done in the stored draws:
+     an exact (straight) match, and the any-order Rambolito match. */
+  function checkDigitHistory(combo, draws, game) {
+    var g = typeof game === "string" ? getDigitGame(game) : game;
+    if (!g) g = DIGIT_GAMES[0];
+    var target = combo.map(String);
+    var straight = [], rambolito = [], i;
+    var prize = digitPrize(g, target);
+    for (i = (draws || []).length - 1; i >= 0; i--) {
+      var row = draws[i], nums = row.n.map(String);
+      if (nums.length !== target.length) continue;
+      var same = true, k;
+      for (k = 0; k < target.length; k++) if (nums[k] !== target[k]) { same = false; break; }
+      if (same) straight.push({ d: row.d, t: row.t, n: nums.slice(), w: row.w });
+      else if (prize.rambolito && sameMultiset(nums, target))
+        rambolito.push({ d: row.d, t: row.t, n: nums.slice(), w: row.w });
+    }
+    return {
+      combo: target, straight: straight, rambolito: rambolito,
+      straightCount: straight.length, rambolitoCount: rambolito.length,
+      rambolitoPrize: prize.rambolito, standardPrize: prize.standard,
+      total: straight.length + rambolito.length
+    };
+  }
+
+  /* The three draws of one date, or of the closest earlier draw date. */
+  function findDailyDate(draws, iso) {
+    var byDate = {}, dates = [], i;
+    for (i = 0; i < (draws || []).length; i++) {
+      var d = draws[i].d;
+      if (!byDate[d]) { byDate[d] = []; dates.push(d); }
+      byDate[d].push(draws[i]);
+    }
+    if (byDate[iso]) return { date: iso, rows: byDate[iso], exact: true };
+    var before = null;
+    for (i = 0; i < dates.length; i++) if (dates[i] < iso) before = dates[i];
+    if (before) return { date: before, rows: byDate[before], exact: false, direction: "before" };
+    return { date: dates.length ? dates[0] : null, rows: dates.length ? byDate[dates[0]] : [],
+             exact: false, direction: "after" };
   }
 
   /* ---------- statistics ---------- */
@@ -480,6 +797,22 @@
 
   var api = {
     GAMES: GAMES,
+    DIGIT_GAMES: DIGIT_GAMES,
+    getDigitGame: getDigitGame,
+    digitCode: digitCode,
+    digitSum: digitSum,
+    digitShape: digitShape,
+    digitPrize: digitPrize,
+    digitOdds: digitOdds,
+    padDigit: padDigit,
+    slotLabel: slotLabel,
+    slotShort: slotShort,
+    manilaNow: manilaNow,
+    nextDailyDraw: nextDailyDraw,
+    analyzeDigits: analyzeDigits,
+    generateDigits: generateDigits,
+    checkDigitHistory: checkDigitHistory,
+    findDailyDate: findDailyDate,
     PRIZE_FLOOR: PRIZE_FLOOR,
     TAX_THRESHOLD: TAX_THRESHOLD,
     TAX_RATE: TAX_RATE,
