@@ -43,8 +43,14 @@ pcso-lotto-site/
 │   ├── js/daily.js         UI for the daily digit games (3D Lotto · 2D Lotto)
 │   ├── js/app.js           UI wiring and rendering of the five 6-number games
 │   └── img/
-│       ├── favicon.svg
+│       ├── logo.png        192×192 brand badge (header .brand-mark)
+│       ├── favicon.ico     16/32/48 tab icon
+│       ├── favicon-16.png · favicon-32.png · favicon-48.png
+│       ├── apple-touch-icon.png  180×180 iOS home screen
+│       ├── icon-192.png · icon-512.png  web manifest icons
+│       ├── favicon.svg     same mark for browsers that prefer SVG
 │       └── og-cover.png    1200×630 social card
+├── site.webmanifest        PWA manifest (name, icons, theme colour)
 ├── data/
 │   ├── pcso_draws.json     The database (JSON)
 │   └── pcso_draws.js       Same database as window.PCSO_DATA, so index.html also works from file://
