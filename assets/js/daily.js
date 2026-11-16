@@ -149,7 +149,7 @@
   }
 
   function renderToday() {
-    var g = game(), m = meta(), list = draws(), box = $("dailyToday");
+    var g = game(), list = draws(), box = $("dailyToday");
     if (!box) return;
     box.innerHTML = "";
     var today = Core.manilaNow().iso;
@@ -625,7 +625,6 @@
       tr.appendChild(td);
       body.appendChild(tr);
     });
-    /* the header of the second column names the numbers, keep it in the page language */
   }
 
   /* =========================================================
