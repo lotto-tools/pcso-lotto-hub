@@ -44,6 +44,32 @@
   function peso(n) { return Core.formatPeso(n, true); }
   function pct(x) { return (x * 100).toFixed(1) + "%"; }
 
+  /* ---------- YouTube draw videos ----------
+     PCSO streams every draw live on its official channel and keeps the
+     recordings there, so there is no fixed video address per draw. Each link
+     opens a YouTube search for that game and that draw date. */
+  var YT_CHANNEL = "https://www.youtube.com/@PCSOGOVPHOfficial/streams";
+
+  function ytDrawUrl(g, iso) {
+    var q = "PCSO " + g.name + " " + iso + " lotto draw";
+    return "https://www.youtube.com/results?search_query=" +
+      encodeURIComponent(q).replace(/%20/g, "+");
+  }
+
+  function ytLink(href, text, cls, label) {
+    var a = el("a", cls, text);
+    a.href = href;
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    if (label) a.setAttribute("aria-label", label);
+    return a;
+  }
+
+  function ytDrawLink(g, iso, cls) {
+    return ytLink(ytDrawUrl(g, iso), "▶ Watch Draw (YouTube)", cls || "btn btn--sm btn--ghost",
+      "Watch the " + g.name + " draw of " + Core.formatDate(iso) + " on YouTube");
+  }
+
   function game() { return Core.getGame(state.game); }
   function gameMeta() { return META.games[state.game]; }
   function draws() { return DRAWS[state.game]; }
@@ -101,6 +127,12 @@
       (d.w === 0 ? "nobody matched 6 of 6" : d.w === 1 ? "one ticket matched 6 of 6" : d.w + " tickets matched 6 of 6") + "</small>";
     $("latestSchedule").innerHTML = g.dayLabel + "<small>9:00 PM PHT</small>";
 
+    var vbox = $("latestVideoLinks");
+    vbox.innerHTML = "";
+    vbox.appendChild(ytDrawLink(g, d.d, "btn btn--sm btn--primary"));
+    vbox.appendChild(ytLink(YT_CHANNEL, "PCSO official channel ↗", "btn btn--sm btn--ghost",
+      "Open the official PCSO YouTube channel"));
+
     var list = draws();
     var prior = list[list.length - 2];
     var box2 = $("priorDraw");
@@ -142,8 +174,11 @@
       var tdJ = el("td", "num", peso(d.j));
       var tdW = el("td", "num", String(d.w));
       var tdNet = el("td", "num", peso(Core.calcTax(d.j).net));
+      var tdVid = el("td", "video-cell");
+      tdVid.appendChild(ytDrawLink(g, d.d, "video-link"));
       tr.appendChild(tdDate); tr.appendChild(tdDay); tr.appendChild(tdNums);
       tr.appendChild(tdJ); tr.appendChild(tdW); tr.appendChild(tdNet);
+      tr.appendChild(tdVid);
       body.appendChild(tr);
     }
   }
@@ -218,6 +253,11 @@
     }
     card.appendChild(el("p", "table-note", "Jackpot " + peso(d.j) + " · " + d.w +
       " jackpot winner" + (d.w === 1 ? "" : "s") + " · net after 20% tax " + peso(net.net) + why));
+    var vid = el("div", "video-row");
+    vid.appendChild(ytDrawLink(g, d.d));
+    vid.appendChild(ytLink(YT_CHANNEL, "PCSO official channel ↗", "btn btn--sm btn--ghost",
+      "Open the official PCSO YouTube channel"));
+    card.appendChild(vid);
     box.appendChild(card);
   }
 
