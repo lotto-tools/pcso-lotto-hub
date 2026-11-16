@@ -153,12 +153,17 @@
     if (!box) return;
     box.innerHTML = "";
     var today = Core.manilaNow().iso;
-    var rows = {};
+    var todayRows = {}, anyToday = false;
     for (var i = 0; i < list.length; i++) {
-      if (list[i].d === today) rows[list[i].t] = list[i];
+      if (list[i].d === today) { todayRows[list[i].t] = list[i]; anyToday = true; }
     }
-    var day = rows[g.times[0]] || rows[g.times[1]] || rows[g.times[2]] || null;
-    var shown = day ? day.d : (latest() ? latest().d : today);
+    /* before the 2:00 PM draw of a new day there is nothing for today yet, so
+       the newest day that does have results is shown, with a note saying so */
+    var shown = anyToday ? today : (latest() ? latest().d : today);
+    var rows = {};
+    for (i = 0; i < list.length; i++) {
+      if (list[i].d === shown) rows[list[i].t] = list[i];
+    }
     $("dailyTodayDate").textContent = longWd(shown) + ", " + date(shown);
 
     var slots = g.times.slice().reverse();
@@ -190,8 +195,8 @@
     });
 
     var note = $("dailyTodayNote");
-    if (rows[g.times[0]] || rows[g.times[1]] || rows[g.times[2]]) note.textContent = "";
-    else note.textContent = t("d.dailyEmptyToday", { date: date(latest() ? latest().d : shown) });
+    note.textContent = anyToday ? ""
+      : t("d.dailyEmptyToday", { date: date(latest() ? latest().d : shown) });
   }
 
   function renderPrize() {
