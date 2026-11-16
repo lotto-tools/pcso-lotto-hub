@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PCSO Lotto Results, Number Statistics &amp; 20% Prize Tax Calculator | PCSO Lotto Hub</title>
+<meta name="description" content="Official PCSO lotto results for Ultra Lotto 6/58, Grand Lotto 6/55, Super Lotto 6/49, Mega Lotto 6/45 and Lotto 6/42, plus real number frequency, hot and cold number, overdue number statistics, a smart combination generator and a TRAIN Law 20% prize tax calculator in Philippine pesos.">
+<meta name="theme-color" content="#0b1a38">
+<link rel="canonical" href="https://lotto-tools.github.io/pcso-lotto-hub/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PCSO Lotto Hub">
+<meta property="og:title" content="PCSO Lotto Results, Statistics &amp; 20% Prize Tax Calculator">
+<meta property="og:description" content="Five PCSO jackpot games, 2,228 real draws since January 2024, number statistics and a TRAIN Law prize tax calculator.">
+<meta property="og:url" content="https://lotto-tools.github.io/pcso-lotto-hub/">
+<meta property="og:image" content="https://lotto-tools.github.io/pcso-lotto-hub/assets/img/og-cover.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "PCSO Lotto Hub",
+  "url": "https://lotto-tools.github.io/pcso-lotto-hub/",
+  "description": "Philippine PCSO lotto results, number statistics and prize tax calculator based on official PCSO draw records.",
+  "inLanguage": "en-PH",
+  "publisher": { "@type": "Organization", "name": "PCSO Lotto Hub", "url": "https://lotto-tools.github.io/pcso-lotto-hub/" }
+}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true">6/58</span>
+      <span class="brand-text">PCSO Lotto Hub<small>Results · Statistics · Tax</small></span>
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="#results" data-tab-link="results" class="is-active">Results</a>
+      <a href="#statistics" data-tab-link="stats">Statistics</a>
+      <a href="#generator" data-tab-link="generator">Generator</a>
+      <a href="#tax" data-tab-link="calc">Tax Calculator</a>
+      <a href="guide.html">Claiming Guide</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow"><span class="live-dot" aria-hidden="true"></span>PCSO data updated <span id="dataUpdated">Nov 16, 2026</span></p>
+      <h1>Philippine PCSO lotto results, number statistics and the 20% prize tax — in one place</h1>
+      <p class="hero-sub">Five jackpot games, every draw since January 2024 taken from the PCSO result records, with the real frequency, overdue and sum statistics behind them, a filter-based number generator, and a TRAIN Law tax and claiming calculator in pesos.</p>
+      <div class="hero-badges">
+        <span id="badgeDraws">2,228 draws</span>
+        <span>6/58 · 6/55 · 6/49 · 6/45 · 6/42</span>
+        <span id="badgeCoverage">Jan 2, 2024 – Nov 15, 2026</span>
+        <span>No account needed</span>
+      </div>
+    </div>
+    <div class="hero-card" aria-live="polite">
+      <div class="hero-card-top">
+        <span class="hero-round" id="heroGameName">Ultra Lotto 6/58</span>
+        <span class="badge badge--gold" id="heroWinners">0 winners</span>
+      </div>
+      <p class="hero-sub" style="margin-bottom:10px;font-size:12.5px" id="heroDrawDate">Latest draw · Sun, Nov 15, 2026 · 9:00 PM PHT</p>
+      <div class="hero-balls" id="heroBalls"></div>
+      <dl class="hero-prize">
+        <div>
+          <dt>Jackpot (before tax)</dt>
+          <dd id="heroJackpot">₱537,913,610.81</dd>
+        </div>
+        <div>
+          <dt>After 20% TRAIN tax</dt>
+          <dd class="accent" id="heroNet">₱430,330,888.65</dd>
+        </div>
+      </dl>
+      <p class="hero-foot"><span id="heroNextDraw">Next draw: Tue, Nov 17, 2026 · 9:00 PM PHT</span><span id="heroCount">446 draws stored</span></p>
+    </div>
+  </div>
+</section>
+
+<div class="gamebar">
+  <div class="wrap gamebar-inner" id="gameBar" role="tablist" aria-label="Choose a lotto game"></div>
+</div>
+
+<nav class="tabbar" aria-label="Sections">
+  <div class="wrap tabbar-inner" id="tabBar">
+    <button class="tab is-active" type="button" data-tab="results">Latest Results</button>
+    <button class="tab" type="button" data-tab="stats">Number Statistics</button>
+    <button class="tab" type="button" data-tab="generator">Smart Generator</button>
+    <button class="tab" type="button" data-tab="calc">Prize &amp; Tax Calculator</button>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <!-- ================= RESULTS ================= -->
+  <section class="panel" id="panel-results" aria-label="Latest results">
+    <div class="card">
+      <div class="draw-head">
+        <div>
+          <h2 class="card-title" id="latestGame">Ultra Lotto 6/58 — latest result</h2>
+          <p class="card-desc" id="latestDate">Sunday, November 15, 2026</p>
+        </div>
+        <span class="badge badge--brand" id="latestDrawNo">Draw #446 in this database</span>
+      </div>
+      <div class="draw-balls" id="latestBalls"></div>
+      <dl class="stat-grid">
+        <div class="stat is-key">
+          <dt>Jackpot</dt>
+          <dd id="latestJackpot">₱537,913,610.81</dd>
+        </div>
+        <div class="stat is-key">
+          <dt>Estimated net payout</dt>
+          <dd id="latestNet">₱430,330,888.65<small>after 20% final tax</small></dd>
+        </div>
+        <div class="stat">
+          <dt>Jackpot winners</dt>
+          <dd id="latestWinners">0<small>nobody matched 6 of 6</small></dd>
+        </div>
+        <div class="stat">
+          <dt>Draw schedule</dt>
+          <dd id="latestSchedule" style="font-size:13px">Tuesday · Friday · Sunday<small>9:00 PM PHT</small></dd>
+        </div>
+      </dl>
+      <p class="table-note" id="priorDraw"></p>
+    </div>
+
+    <div class="grid-2" style="margin-top:16px">
+      <div class="card">
+        <h2 class="card-title">Find a past draw by date</h2>
+        <p class="card-desc">Pick any date from January 2, 2024 to the latest draw. If the game did not draw that day, the closest earlier draw is shown.</p>
+        <form class="lookup" id="dateForm">
+          <label class="sr-only" for="dateInput">Draw date</label>
+          <input class="input" type="date" id="dateInput" min="2024-01-02" max="2026-11-15" required>
+          <button class="btn btn--primary" type="submit">Show draw</button>
+          <button class="btn btn--ghost btn--sm" type="button" id="btnDateReset">Latest</button>
+        </form>
+        <div id="dateResult" style="margin-top:14px"></div>
+      </div>
+      <div class="card">
+        <h2 class="card-title">Jackpot trend</h2>
+        <p class="card-desc" id="trendDesc">Last 30 draws of the selected game. A jackpot resets to the game's minimum once it is won.</p>
+        <div id="trendChart" style="min-height:150px"></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <div class="draw-head">
+        <div>
+          <h2 class="card-title">Draw history</h2>
+          <p class="card-desc" id="historyRangeLabel">All stored draws for this game</p>
+        </div>
+        <div class="lookup">
+          <label class="sr-only" for="historyCount">Rows</label>
+          <select class="input" id="historyCount">
+            <option value="20">Last 20 draws</option>
+            <option value="50">Last 50 draws</option>
+            <option value="100">Last 100 draws</option>
+            <option value="0">All stored draws</option>
+          </select>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table class="data">
+          <thead>
+            <tr>
+              <th scope="col">Draw date</th>
+              <th scope="col">Day</th>
+              <th scope="col">Winning numbers</th>
+              <th scope="col">Jackpot (PHP)</th>
+              <th scope="col">Winners</th>
+              <th scope="col">Net after tax</th>
+            </tr>
+          </thead>
+          <tbody id="historyBody"></tbody>
+        </table>
+      </div>
+      <p class="table-note">Winning numbers are shown in ascending order; PCSO pays them in any order. “Net after tax” is our arithmetic: the jackpot minus the 20% final tax under the TRAIN Law, for a single winner.</p>
+    </div>
+
+    <div class="source-box" style="margin-top:16px">
+      <b>Where this data comes from.</b> Every draw on this page is a PCSO draw result published by the Philippine Charity Sweepstakes Office (pcso.gov.ph, “Search Lotto Result by Date”), mirrored as machine-readable records by the <a href="https://github.com/kimken147/pcso-results-data" rel="nofollow noopener" target="_blank">Lotto Tayo dataset (CC BY 4.0)</a>. This site stores <span id="totalDraws">2,228</span> draws for the five 6-number games, from <span id="dataFrom">January 2, 2024</span> to <span id="dataTo">November 15, 2026</span>. Nothing here is simulated or estimated — numbers, dates, jackpots and winner counts are as published. PCSO's own record prevails if anything disagrees.
+    </div>
+  </section>
+
+  <!-- ================= STATISTICS ================= -->
+  <section class="panel" id="panel-stats" aria-label="Number statistics" hidden>
+    <div class="card">
+      <div class="draw-head">
+        <div>
+          <h2 class="card-title" id="statsTitle">Ultra Lotto 6/58 — number statistics</h2>
+          <p class="card-desc" id="statsRangeLabel">Last 50 draws of this game</p>
+        </div>
+        <div class="segmented" id="rangeSeg" role="group" aria-label="Draw range">
+          <button type="button" data-range="20">Last 20</button>
+          <button type="button" data-range="50" class="is-active">Last 50</button>
+          <button type="button" data-range="100">Last 100</button>
+          <button type="button" data-range="0">All stored</button>
+        </div>
+      </div>
+      <dl class="stat-grid">
+        <div class="stat is-key"><dt>Draws analyzed</dt><dd id="statsSize">50</dd></div>
+        <div class="stat"><dt>Expected hits per number</dt><dd id="statsExpected">5.17</dd></div>
+        <div class="stat"><dt>Average winning sum</dt><dd id="statsAvgSum">177</dd></div>
+        <div class="stat"><dt>Most overdue</dt><dd id="statsOverdueTop">31<small>12 draws since it appeared</small></dd></div>
+      </dl>
+      <div class="divider"></div>
+      <h3 class="card-title">Frequency heatmap</h3>
+      <p class="card-desc">How many times each number came out in the selected range. Deeper blue means it appeared more often than the average for this range.</p>
+      <div class="heatmap" id="heatmap"></div>
+      <div class="chip-row" id="heatLegend" style="margin-top:12px"></div>
+    </div>
+
+    <div class="grid-3" style="margin-top:16px">
+      <div class="card">
+        <h3 class="card-title">Hot numbers</h3>
+        <p class="card-desc">Most drawn in this range.</p>
+        <div class="chip-row" id="hotChips"></div>
+      </div>
+      <div class="card">
+        <h3 class="card-title">Cold numbers</h3>
+        <p class="card-desc">Least drawn in this range.</p>
+        <div class="chip-row" id="coldChips"></div>
+      </div>
+      <div class="card">
+        <h3 class="card-title">Most overdue</h3>
+        <p class="card-desc">Draws since the number last appeared.</p>
+        <div class="chip-row" id="overdueChips"></div>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-top:16px">
+      <div class="card">
+        <h3 class="card-title">Odd / even split</h3>
+        <p class="card-desc">How many odd numbers each winning draw carried.</p>
+        <div id="oddChart"></div>
+      </div>
+      <div class="card">
+        <h3 class="card-title">Low / high split</h3>
+        <p class="card-desc" id="lowHighDesc">Low = 1 to 29, high = 30 to 58.</p>
+        <div id="lowChart"></div>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-top:16px">
+      <div class="card">
+        <h3 class="card-title">Sum distribution</h3>
+        <p class="card-desc" id="sumDesc">Total of the six winning numbers, grouped into equal bands.</p>
+        <div id="sumChart"></div>
+      </div>
+      <div class="card">
+        <h3 class="card-title">Most common pairs</h3>
+        <p class="card-desc">Number pairs that came out together most often in this range.</p>
+        <div class="pair-grid" id="pairList"></div>
+      </div>
+    </div>
+
+    <div class="notice notice--warn" style="margin-top:16px">
+      <span aria-hidden="true">!</span>
+      <span><b>What statistics can and cannot do.</b> Every draw is an independent event. Frequencies, gaps and sums describe what already happened in the PCSO records; they do not change the odds of the next draw, which stay fixed at 1 in 40,475,358 for Ultra Lotto 6/58. Use this page to explore the data, not as a prediction.</span>
+    </div>
+  </section>
+
+  <!-- ================= GENERATOR ================= -->
+  <section class="panel" id="panel-generator" aria-label="Number generator" hidden>
+    <div class="gen-layout">
+      <div class="card">
+        <h2 class="card-title" id="genTitle">Ultra Lotto 6/58 — smart picker</h2>
+        <p class="card-desc">Tap numbers to include or exclude them, set an odd/even split, then build five combinations inside the 1–58 range. Every combination is checked against all stored draws.</p>
+
+        <div class="field">
+          <div class="field-label">
+            <strong>Number board</strong>
+            <div class="segmented" id="paintMode" role="group" aria-label="Tap action">
+              <button type="button" data-mode="fixed" class="is-active">Include</button>
+              <button type="button" data-mode="excluded">Exclude</button>
+            </div>
+          </div>
+          <div class="num-grid" id="numGrid"></div>
+          <p class="table-note" id="pickSummary">Included: none · Excluded: none</p>
+        </div>
+
+        <div class="field">
+          <div class="field-label"><strong>Odd : even split</strong><span>Applies to the whole 6-number ticket</span></div>
+          <select class="input" id="oddEven">
+            <option value="any">Any split</option>
+            <option value="1:5">1 odd · 5 even</option>
+            <option value="2:4">2 odd · 4 even</option>
+            <option value="3:3">3 odd · 3 even</option>
+            <option value="4:2">4 odd · 2 even</option>
+            <option value="5:1">5 odd · 1 even</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label class="check-line"><input type="checkbox" id="noConsec"> Remove combinations with consecutive numbers</label>
+        </div>
+
+        <div class="lookup">
+          <button class="btn btn--primary" type="button" id="btnGenerate">Generate 5 combinations</button>
+          <button class="btn btn--sm" type="button" id="btnClear">Clear filters</button>
+        </div>
+        <p class="table-note" id="genOdds"></p>
+        <p class="notice" id="genStatus" style="margin-top:10px;display:none"></p>
+      </div>
+
+      <div class="card">
+        <h2 class="card-title">Your combinations</h2>
+        <p class="card-desc">Each pick is compared with every stored draw of this game: how many times it would have matched 6, 5, 4 and 3 numbers.</p>
+        <div id="gameList" class="game-list">
+          <div class="empty"><strong>No combinations yet</strong>Choose your filters, then press “Generate 5 combinations”.</div>
+        </div>
+        <div class="divider"></div>
+        <h3 class="card-title">How to read the history check</h3>
+        <p class="card-desc" style="margin-bottom:6px">“6-match” means the combination is exactly a past winning draw. A 3-, 4- or 5-match line shows how often a ticket with three, four or five of those numbers would have shared a lower prize. It is a reference, not a forecast.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CALCULATOR ================= -->
+  <section class="panel" id="panel-calc" aria-label="Prize and tax calculator" hidden>
+    <div class="calc-layout">
+      <div class="card">
+        <h2 class="card-title">Prize &amp; tax calculator</h2>
+        <p class="card-desc">Enter any PCSO prize amount. Prizes of ₱10,000 or less are tax-free; anything above ₱10,000 carries the 20% final withholding tax under the TRAIN Law (RA 10963).</p>
+        <label class="sr-only" for="amountInput">Prize amount in pesos</label>
+        <div class="amount-box">
+          <span class="peso" aria-hidden="true">₱</span>
+          <input id="amountInput" type="text" inputmode="decimal" autocomplete="off" value="537913610.81" aria-describedby="quickJackpots">
+        </div>
+        <p class="field-label" style="margin:14px 0 0"><strong>Use a current jackpot</strong><span>Latest draws in this database</span></p>
+        <div class="quick-row" id="quickJackpots"></div>
+        <p class="field-label" style="margin:14px 0 0"><strong>Common amounts</strong><span>Tax and claiming brackets</span></p>
+        <div class="quick-row">
+          <button class="quick" type="button" data-amount="20">₱20</button>
+          <button class="quick" type="button" data-amount="10000">₱10,000</button>
+          <button class="quick" type="button" data-amount="10000.01">₱10,000.01</button>
+          <button class="quick" type="button" data-amount="50000">₱50,000</button>
+          <button class="quick" type="button" data-amount="300000">₱300,000</button>
+          <button class="quick" type="button" data-amount="300001">₱300,001</button>
+        </div>
+        <div class="divider"></div>
+        <table class="tier-table" id="tierTable">
+          <thead>
+            <tr><th scope="col">Prize</th><th scope="col">Tax</th><th scope="col">Claim at</th></tr>
+          </thead>
+          <tbody>
+            <tr data-tier="outlet"><td>₱20 – ₱10,000</td><td>None</td><td>Any authorized lotto outlet or PCSO branch</td></tr>
+            <tr data-tier="branch"><td>₱10,001 – ₱300,000</td><td>20%</td><td>PCSO branch office or Main Office</td></tr>
+            <tr data-tier="main"><td>Over ₱300,000</td><td>20%</td><td>PCSO Main Office, Mandaluyong City</td></tr>
+          </tbody>
+        </table>
+        <div class="divider"></div>
+        <ul class="check-list">
+          <li><b>Only the 20% tax comes off your prize.</b> The 1% commission on a jackpot goes to the authorized outlet that sold the ticket and is paid by PCSO, not deducted from the winner.</li>
+          <li><b>Claim within one year</b> of the draw date. A prize not claimed in that time is forfeited to PCSO's charity fund.</li>
+          <li><b>Buy only from authorized PCSO outlets</b> — a ticket from an unauthorised seller is not a valid PCSO ticket and cannot be claimed.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="result-hero">
+          <p class="label">Estimated amount you take home</p>
+          <p class="value" id="calcNet">₱430,330,888.65</p>
+          <p class="sub" id="calcSub">from a ₱537,913,610.81 prize · 20% final tax withheld</p>
+        </div>
+        <div class="split-list">
+          <div class="split-row"><span>Prize (gross)</span><b id="calcGross">₱537,913,610.81</b></div>
+          <div class="split-row"><span>20% final withholding tax</span><b id="calcTax">₱107,582,722.16</b></div>
+          <div class="split-row is-net"><span>Net payout</span><b id="calcNetRow">₱430,330,888.65</b></div>
+          <div class="split-row"><span>Effective deduction</span><b id="calcRate">20.00%</b></div>
+        </div>
+        <div class="divider"></div>
+        <div class="claim-card" id="claimCard">
+          <p class="tier" id="claimTier">Over ₱300,000 (includes the jackpot)</p>
+          <p class="where" id="claimWhere">PCSO Main Office only — Sun Plaza, Shaw Blvd. cor. Princeton St., Mandaluyong City.</p>
+          <p class="card-desc" id="claimPay" style="margin-bottom:8px"></p>
+          <ul id="claimDocs"></ul>
+        </div>
+        <p class="table-note">The 20% is computed on the whole prize, not only the part above ₱10,000. Tax is withheld by PCSO when the prize is paid; there is nothing to pay in advance.</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h2 class="card-title">Tax and claiming quick answers</h2>
+      <div class="faq" style="margin-top:10px">
+        <details open>
+          <summary>How much tax is taken from a PCSO jackpot?</summary>
+          <p>Twenty percent (20%) final withholding tax on the gross prize if the prize is more than ₱10,000. A ₱100,000,000 jackpot pays ₱20,000,000 in tax and ₱80,000,000 in cash. Prizes of ₱10,000 or less are exempt under the TRAIN Law (Republic Act No. 10963).</p>
+        </details>
+        <details>
+          <summary>Is the 20% taken from the excess over ₱10,000 or from the whole prize?</summary>
+          <p>From the whole prize. Once a prize exceeds ₱10,000, the 20% applies to the full amount, so a ₱10,001 prize pays ₱2,000.20 in tax and ₱8,000.80 in cash. A ₱10,000 prize pays no tax at all — that one-peso difference is the cliff in this calculator.</p>
+        </details>
+        <details>
+          <summary>Where do I claim, and how long do I have?</summary>
+          <p>Up to ₱10,000: any authorized lotto outlet or PCSO branch. ₱10,001 to ₱300,000: a PCSO branch office or the Main Office. Above ₱300,000, including every jackpot: the PCSO Main Office at Sun Plaza, Shaw Boulevard corner Princeton Street, Mandaluyong City, in person. The ticket must be claimed within one year of the draw date, or the prize is forfeited to PCSO's charity fund.</p>
+        </details>
+        <details>
+          <summary>Does the calculator include the 1% agent commission?</summary>
+          <p>No. The 1% commission on a jackpot goes to the authorized PCSO agent that sold the winning ticket, paid by PCSO — it is not deducted from the winner's prize. The only deduction from your prize is the 20% final tax.</p>
+        </details>
+      </div>
+      <p class="table-note">This calculator is an information tool, not tax or legal advice. PCSO withholds the tax at payout and its computation is final; confirm current requirements with PCSO before claiming.</p>
+    </div>
+  </section>
+
+  <!-- ================= ALWAYS-VISIBLE CONTENT ================= -->
+  <section class="section-head" id="overview">
+    <div>
+      <h2>The five PCSO jackpot games</h2>
+      <p>Ticket odds, draw nights and pool size for every game in this database.</p>
+    </div>
+  </section>
+  <div class="card">
+    <div class="table-scroll">
+      <table class="data">
+        <thead>
+          <tr><th scope="col">Game</th><th scope="col">Numbers</th><th scope="col">Draw nights</th><th scope="col">Draw time</th><th scope="col">Odds of 6 of 6</th><th scope="col">Draws stored</th></tr>
+        </thead>
+        <tbody id="oddsBody"></tbody>
+      </table>
+    </div>
+    <p class="table-note">Odds are the number of possible 6-number combinations in each pool: 58 choose 6, 55 choose 6, and so on. Draw nights are the PCSO schedule the stored draw dates follow.</p>
+  </div>
+
+  <section class="section-head">
+    <div>
+      <h2>What this site does</h2>
+      <p>Four tools built on the same set of PCSO draw records.</p>
+    </div>
+  </section>
+  <div class="grid-3">
+    <div class="card">
+      <h3 class="card-title">Results you can search</h3>
+      <p class="card-desc">The latest result for each game, the jackpot and the net amount after tax, a jackpot trend line, and any past draw by date — back to January 2, 2024.</p>
+      <button class="btn btn--sm" type="button" data-tab-link="results">Open results</button>
+    </div>
+    <div class="card">
+      <h3 class="card-title">Statistics that show their work</h3>
+      <p class="card-desc">Frequency heatmap, hot and cold numbers, the most overdue numbers, odd/even and low/high splits, sum distribution and the pairs that appear together most — for the last 20, 50, 100 or all draws.</p>
+      <button class="btn btn--sm" type="button" data-tab-link="stats">Open statistics</button>
+    </div>
+    <div class="card">
+      <h3 class="card-title">A picker and a tax calculator</h3>
+      <p class="card-desc">Include up to five fixed numbers, exclude numbers, set an odd/even split and drop consecutive numbers to build five combinations, each checked against every stored draw. Then see exactly what a prize is worth after the 20% tax, and where to claim it.</p>
+      <button class="btn btn--sm" type="button" data-tab-link="calc">Open calculator</button>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <span class="footer-brand">PCSO Lotto Hub</span>
+      <nav class="footer-nav" aria-label="Footer">
+        <a href="index.html">Home</a>
+        <a href="guide.html">Claiming Guide</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="mailto:contact@pcsolottohub.example">Contact</a>
+      </nav>
+    </div>
+    <p class="footer-note">
+      <b>Independent information site.</b> PCSO Lotto Hub is not affiliated with, endorsed by, or connected to the Philippine Charity Sweepstakes Office. Results, jackpots and winner counts are drawn from PCSO's published draw records and are shown for information only; PCSO's own record is final. We do not sell tickets and we do not accept bets.<br>
+      <span class="responsible">18+</span> Lotto is a game of chance. Play only what you can afford to lose. If gambling stops being fun, stop — and talk to someone you trust.
+    </p>
+  </div>
+</footer>
+
+<script src="data/pcso_draws.js"></script>
+<script src="assets/js/lotto-core.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>

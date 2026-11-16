@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="PCSO Lotto Hub">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1a38"/>
+      <stop offset="1" stop-color="#1450c8"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="15" fill="url(#g)"/>
+  <circle cx="24" cy="27" r="12" fill="#f2b200"/>
+  <circle cx="24" cy="27" r="12" fill="none" stroke="#ffffff" stroke-opacity=".35" stroke-width="2"/>
+  <text x="24" y="32" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="13" font-weight="bold" fill="#4b3500">6/58</text>
+  <circle cx="43" cy="41" r="9" fill="#ffffff" fill-opacity=".92"/>
+  <text x="43" y="45" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="bold" fill="#1450c8">₱</text>
+</svg>

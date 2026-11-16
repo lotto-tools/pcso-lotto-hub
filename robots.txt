@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Keep crawlers out of source tooling and the test suite (no indexable content there).
+Disallow: /tools/
+Disallow: /tests/
+
+Sitemap: https://lotto-tools.github.io/pcso-lotto-hub/sitemap.xml
