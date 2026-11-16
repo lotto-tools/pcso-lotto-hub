@@ -1,17 +1,20 @@
 # PCSO Lotto Hub
 
-A static, mobile-first English site for Philippine PCSO lotto results, number statistics and the
-20% TRAIN Law prize tax — built on **real PCSO draw records** for the five 6-number jackpot games:
+A static, mobile-first site for Philippine PCSO lotto results, number statistics and the 20% TRAIN
+Law prize tax — written in **Tagalog by default, English on demand** (`?lang=en` or the
+`[Tagalog | English]` switch in the header) and built on **real PCSO draw records** for the five
+6-number jackpot games:
 
 | Game | Numbers | Draw nights | ODDS (6 of 6) | Draws stored |
 |---|---|---|---|---|
 | Ultra Lotto 6/58 | 1–58 | Tue · Fri · Sun, 9:00 PM PHT | 1 in 40,475,358 | 446 |
-| Grand Lotto 6/55 | 1–55 | Mon · Wed · Sat, 9:00 PM PHT | 1 in 28,989,675 | 446 |
+| Grand Lotto 6/55 | 1–55 | Mon · Wed · Sat, 9:00 PM PHT | 1 in 28,989,675 | 447 |
 | Super Lotto 6/49 | 1–49 | Tue · Thu · Sun, 9:00 PM PHT | 1 in 13,983,816 | 446 |
-| Mega Lotto 6/45 | 1–45 | Mon · Wed · Fri, 9:00 PM PHT | 1 in 8,145,060 | 446 |
+| Mega Lotto 6/45 | 1–45 | Mon · Wed · Fri, 9:00 PM PHT | 1 in 8,145,060 | 447 |
 | Lotto 6/42 | 1–42 | Tue · Thu · Sat, 9:00 PM PHT | 1 in 5,245,786 | 444 |
 
-Coverage: **January 2, 2024 → November 15, 2026**, 2,228 draws, refreshed November 16, 2026.
+Coverage: **January 2, 2024 → November 16, 2026**, 2,230 draws. Refreshed automatically every night
+by GitHub Actions (see §4).
 
 **Live:** https://lotto-tools.github.io/pcso-lotto-hub/ (GitHub Pages, `main` / root).
 
@@ -33,6 +36,7 @@ pcso-lotto-site/
 ├── README.md               This file
 ├── assets/
 │   ├── css/style.css       All styling, one file, responsive from 320 px up
+│   ├── js/i18n.js          Language layer: Tagalog source text, English strings, [Tagalog | English] switch
 │   ├── js/lotto-core.js    Pure logic: tax, claim brackets, statistics, generator, checks (no DOM)
 │   ├── js/app.js           UI wiring and rendering
 │   └── img/
@@ -41,7 +45,9 @@ pcso-lotto-site/
 ├── data/
 │   ├── pcso_draws.json     The database (JSON)
 │   └── pcso_draws.js       Same database as window.PCSO_DATA, so index.html also works from file://
-├── tests/unit_test.py      Unit tests for every calculation, run against the JS core with QuickJS
+├── tests/unit_test.py      Unit tests: every calculation, plus language-key coverage
+├── .github/workflows/
+│   └── update.yml          Daily GitHub Action: fetch new draws, validate, commit, push
 └── tools/
     ├── update_draws.py     Fetch + validate + rebuild data/pcso_draws.{json,js}
     └── browser_check.py    Headless Chromium check: console errors, overflow, features, screenshots
@@ -61,6 +67,21 @@ pcso-lotto-site/
   [PCSO GOV channel](https://www.youtube.com/@PCSOGOVPHOfficial/streams) is linked from the header
   nav, the hero card and the source note. PCSO keeps no fixed per-draw video address, so the links
   search rather than point at one video.
+
+**Language**
+- The page opens in **Tagalog (Filipino)** — the natural language of the players the site is for —
+  with an English version behind `?lang=en` and the `[Tagalog | English]` switch at the top right of
+  the header on every page.
+- The switch remembers the choice in `localStorage`, updates `?lang=` in the address bar when the URL
+  already carries it, and re-renders the whole page (hero, game pills, latest result, history table,
+  statistics, generator, tax calculator, claiming tiers, check messages, guide, privacy and terms) in
+  the chosen language. Dates, weekday names and month names follow the language too (Lin · Lun · Mar …
+  / Nob 15, 2026).
+- Official game names (`Ultra Lotto 6/58` …), numbers and the peso sign stay as they are; ordinary
+  loanwords Filipinos use (lotto, jackpot, draw, kombinasyon, buwis) are kept in Tagalog copy.
+- The Tagalog text lives in the HTML (so the page is complete and indexable without JavaScript);
+  `assets/js/i18n.js` holds the English strings for every `data-i18n` element plus both languages for
+  everything the UI renders at run time.
 
 **Statistics** (last 20 / 50 / 100 / all stored draws, always inside the selected game's number pool)
 - Frequency heatmap for 1–58, 1–55, 1–49, 1–45 or 1–42 (grid renders to the game's maximum).
@@ -109,6 +130,25 @@ draw has six unique numbers inside the pool, and that there is one draw per date
 
 ## 4. Refreshing the results
 
+### Automatic (GitHub Actions — no Pickle usage)
+
+`.github/workflows/update.yml` runs `tools/update_draws.py` on GitHub's own servers:
+
+| | |
+|---|---|
+| Schedule | `30 13 * * *` and `30 15 * * *` (UTC) = **21:30 and 23:30 PHT**, after the 9:00 PM draw |
+| Manual run | Actions → *Update PCSO draw results* → **Run workflow** (`workflow_dispatch`) |
+| On change | commits `data/` with `github-actions[bot]` and pushes to `main` → Pages redeploys |
+| On no change | writes nothing, so there is no diff and no empty commit |
+
+The script refuses to write when the mirror is behind the stored data (a mirror outage would
+otherwise roll the published results back) and stops with an explanation instead; `--allow-rewind`
+overrides that by hand. A failed fetch, a bad row or a weekday that does not match the game's
+schedule fails the workflow run, so a broken refresh is visible in the Actions tab rather than
+silently published.
+
+### By hand
+
 ```bash
 python3 tools/update_draws.py            # fetch latest from the mirror, validate, rewrite data files
 python3 tools/update_draws.py --offline  # rebuild from tools/raw/*.json without network
@@ -117,10 +157,9 @@ python3 tools/update_draws.py --offline  # rebuild from tools/raw/*.json without
 It rewrites `data/pcso_draws.json` and `data/pcso_draws.js` and prints one line per game plus any
 warnings (unexpected weekday, duplicate date). Commit the two data files.
 
-Every count and date on `index.html` is rendered from the data at load time, so nothing else needs
-editing after a refresh. The exceptions are the static figures written into `guide.html` ("2,228 draws
-… January 2, 2024 to November 15, 2026"), the meta/OG descriptions in `index.html` and `guide.html`,
-and `<lastmod>` in `sitemap.xml` — update those four by hand when you publish a refresh.
+Every count, date and label on `index.html` is rendered from the data at load time, so nothing else
+needs editing after a refresh. `<lastmod>` in `sitemap.xml` is the only hand-maintained date; the
+prose deliberately avoids naming an exact draw count so it cannot drift behind the data.
 
 If you would rather read PCSO directly, replace the URL in `tools/update_draws.py` — `normalise()`
 only needs `date`, `numbers` (6 items) and `jackpot`, `winners` per draw. Note that pcso.gov.ph

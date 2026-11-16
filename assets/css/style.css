@@ -82,6 +82,23 @@ h1, h2, h3, h4 { line-height: 1.3; }
 .site-nav a:hover { background: var(--line-soft); color: var(--ink); }
 .site-nav a.is-active { background: var(--brand-soft); color: var(--brand); }
 
+/* ---------- language switch: [ Tagalog | English ] ---------- */
+.lang-switch {
+  display: inline-flex; align-items: center; flex: 0 0 auto;
+  margin-left: 4px; padding: 2px;
+  border: 1px solid var(--line); border-radius: 999px; background: #fff;
+}
+.lang-switch button {
+  border: 0; background: transparent; cursor: pointer;
+  padding: 4px 9px; border-radius: 999px; line-height: 1.5;
+  font-size: 12px; font-weight: 700; color: var(--muted);
+  letter-spacing: -.01em; transition: background .15s, color .15s;
+}
+.lang-switch button:hover { color: var(--ink); }
+.lang-switch button.is-active { background: var(--brand); color: #fff; }
+.lang-switch button:focus-visible { outline: 2px solid var(--brand-2); outline-offset: 1px; }
+.lang-switch > span { color: #cbd5e1; font-size: 11px; line-height: 1; }
+
 /* ---------- hero ---------- */
 .hero {
   position: relative;
@@ -199,6 +216,7 @@ h1, h2, h3, h4 { line-height: 1.3; }
 }
 .tab:hover { background: var(--line-soft); }
 .tab.is-active { background: var(--brand); color: #fff; box-shadow: 0 8px 18px -12px rgba(20, 80, 200, .9); }
+.tab--guide { display: none; }
 
 /* ---------- layout ---------- */
 main { padding: 24px 0 10px; }
@@ -497,6 +515,13 @@ input.input:focus, select.input:focus, .amount-box:focus-within { outline: none;
 
 /* ---------- responsive ---------- */
 @media (max-width: 900px) {
+  /* the tab bar repeats Results / Statistics / Generator / Calculator,
+     so the header keeps only the claiming guide beside the language switch */
+  .site-nav a { display: none; }
+  .site-nav a[href$="guide.html"] {
+    display: inline-flex; align-items: center; padding: 7px 11px; font-size: 13px;
+    border: 1px solid var(--line); border-radius: 10px;
+  }
   .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 20px; }
   .gen-layout, .calc-layout, .split { grid-template-columns: minmax(0, 1fr); }
   .gen-layout > *, .calc-layout > *, .split > *, .grid-2 > *, .grid-3 > * { min-width: 0; }
@@ -510,10 +535,12 @@ input.input:focus, select.input:focus, .amount-box:focus-within { outline: none;
   .gamebar-inner, .tabbar-inner { padding-left: 14px; padding-right: 14px; }
   .header-inner { height: 58px; gap: 10px; }
   .brand-text small { display: none; }
-  .site-nav { gap: 0; }
-  .site-nav a { display: none; }
-  .site-nav a[href$="guide.html"] { display: inline-flex; padding: 7px 11px; font-size: 13px; border: 1px solid var(--line); }
+  .lang-switch { margin-left: 0; padding: 1px; }
+  .lang-switch button { padding: 4px 7px; font-size: 11.5px; }
+  .site-nav { display: none; }
   .header-inner { justify-content: space-between; }
+  .tab--guide { display: flex; grid-column: 1 / -1; align-items: center; justify-content: center;
+    border-color: var(--line); background: #fff; }
   .hero { padding: 22px 0 26px; }
   .hero h1 { font-size: 23px; }
   .hero-sub { font-size: 13px; }
@@ -564,6 +591,8 @@ input.input:focus, select.input:focus, .amount-box:focus-within { outline: none;
 }
 
 @media (max-width: 360px) {
+  .brand-text { display: none; }
+  .header-inner { gap: 8px; }
   .hero .ball { --size: 28px; }
   .hero-balls { gap: 5px; }
   .game-pill { padding: 5px 8px; }
