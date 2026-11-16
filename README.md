@@ -56,6 +56,11 @@ pcso-lotto-site/
 - Search any past draw by date; if the game did not draw that day, the closest earlier draw is shown
   with an explicit note.
 - Draw history table: last 20 / 50 / 100 / all stored draws, with the net-after-tax column.
+- Draw videos: a **“Watch Draw (YouTube)”** link on the latest result, on the by-date result and on
+  every history row opens a YouTube search for that game and that draw date. The official
+  [PCSO GOV channel](https://www.youtube.com/@PCSOGOVPHOfficial/streams) is linked from the header
+  nav, the hero card and the source note. PCSO keeps no fixed per-draw video address, so the links
+  search rather than point at one video.
 
 **Statistics** (last 20 / 50 / 100 / all stored draws, always inside the selected game's number pool)
 - Frequency heatmap for 1–58, 1–55, 1–49, 1–45 or 1–42 (grid renders to the game's maximum).
@@ -187,6 +192,9 @@ than against itself. It needs `pip install quickjs`.
 `tools/browser_check.py` needs `pip install playwright && playwright install chromium`; it fails on
 any console error, failed request or horizontal overflow at 1440, 768, 390 and 320 px, and writes
 `pcso-site-desktop.png` and `pcso-site-mobile.png` to `../downloads/` (override with `SCREENSHOT_DIR`).
+It also checks the YouTube draw links: the exact search URL built from each game and draw date, the
+official channel URL, one link per history row, that the link follows the selected game, and that
+every link opens in a new tab with `rel="noopener noreferrer"` (77 checks in total, 0 failed).
 
 ## 8. Compliance notes
 
