@@ -13,6 +13,8 @@ A static, mobile-first English site for Philippine PCSO lotto results, number st
 
 Coverage: **January 2, 2024 → November 15, 2026**, 2,228 draws, refreshed November 16, 2026.
 
+**Live:** https://lotto-tools.github.io/pcso-lotto-hub/ (GitHub Pages, `main` / root).
+
 No frameworks, no build step, no server: plain HTML, CSS and JavaScript, so the whole folder can be
 dropped on GitHub Pages, Cloudflare Pages, Netlify or any static host as-is.
 
@@ -27,7 +29,7 @@ pcso-lotto-site/
 ├── privacy.html            Privacy policy (cookies, Google AdSense disclosure, rights)
 ├── terms.html              Terms of use (no affiliation with PCSO, no ticket sales, responsible play)
 ├── robots.txt              Crawl rules + sitemap pointer
-├── sitemap.xml             4 URLs, placeholder domain
+├── sitemap.xml             4 URLs, live domain lotto-tools.github.io/pcso-lotto-hub
 ├── README.md               This file
 ├── assets/
 │   ├── css/style.css       All styling, one file, responsive from 320 px up
@@ -129,23 +131,27 @@ python3 -m http.server 8000
 # open http://127.0.0.1:8000/
 ```
 
-**GitHub Pages** — push the folder contents to a repository, then Settings → Pages → Deploy from a
-branch → `main` / root. All links are relative, so a project page
-(`https://user.github.io/repo/`) works without changes, but update `canonical`, `og:url`, the
-sitemap and `robots.txt` to the real URL (see §6).
+**GitHub Pages** — this site is deployed at https://lotto-tools.github.io/pcso-lotto-hub/ from
+`lotto-tools/pcso-lotto-hub` (`main` / root, `Deploy from a branch`). All links are relative, so a
+project page (`https://user.github.io/repo/`) works without changes; the absolute URLs
+(`canonical`, `og:url`, sitemap, `robots.txt`) already point at that Pages URL — update them if the
+repository or user name changes (see §6).
 
 **Cloudflare Pages** — create a project, connect the repository, framework preset "None", build
 command empty, output directory `/` (or the folder that holds `index.html`). No build step.
 
-## 6. Before going live: replace the placeholders
+## 6. Placeholders and the deployed domain
 
-The domain and contact address are placeholders and must be replaced everywhere:
+The domain is set to the live GitHub Pages URL (`https://lotto-tools.github.io/pcso-lotto-hub`) in
+every absolute reference. The contact address is still the placeholder
+`contact@pcsolottohub.example`, kept deliberately so no personal mailbox is published; replace it
+when a site mailbox exists:
 
 ```bash
-# 1. domain: pcsolottohub.example  →  your real domain (no trailing slash)
-grep -rl "pcsolottohub.example" . --exclude-dir=.git
-# 2. contact address: contact@pcsolottohub.example  →  your real mailbox
+# contact address: contact@pcsolottohub.example  →  your real mailbox
 grep -rl "contact@pcsolottohub.example" . --exclude-dir=.git
+# if the user or repository name changes, re-point the domain too
+grep -rl "lotto-tools.github.io/pcso-lotto-hub" . --exclude-dir=.git
 ```
 
 Files that contain them:
